@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     [SerializeField]
     private int minutes;
-    private float timeValue;
+    public float timeValue;
     private float lastTimeToHead;
 
     [SerializeField]
@@ -28,8 +28,8 @@ public class GameManager : MonoBehaviour
 
     public bool headTime;
     public bool headTimeFinish;
-
     public bool headTurnComplete;
+    public float speedHeadTurn = 3;
 
     [SerializeField]
     private int totalBots;
@@ -59,13 +59,19 @@ public class GameManager : MonoBehaviour
         timeValue = minutes * 60;
     }
 
+    public int GetGameTime()
+    {
+        return minutes * 60;
+    }
+
     public IEnumerator CheckReadyToStart()
     {
-        yield return new WaitForSeconds(1f);
-        
+        yield return new WaitForSeconds(0.5f);
+
         if (SocketClient.instance.player.GetComponent<PlayerMovement>().isReadyStartGame)
         {
             isReadyStartGame = true;
+            dollSing.Play();
         }
             
         Debug.Log("CheckReadyToStart ---------------------------------- " + isReadyStartGame);
@@ -139,11 +145,13 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        //Debug.Log(" secs ==============  " + secs + "  lastTimeToHead ===  " + lastTimeToHead);
         if (secs % headTimer == 0 && secs != lastTimeToHead)
         {
+            Debug.Log(" secs % headTimer ==============  " + secs % headTimer + "  lastTimeToHead ===  " + (secs != lastTimeToHead));
             lastTimeToHead = secs;
             headTime = !headTime;
-
+            //SocketClient.instance.OnHeadTurn();
             if (headTime)
             {
                 dollHeadOn.Play(0);
@@ -164,11 +172,32 @@ public class GameManager : MonoBehaviour
             RotHead(0);
     }
 
+    public void DoSingAndHeadTurn()
+    {
+        if (headTime)
+        {
+            dollHeadOn.Play(0);
+        }
+        else
+        {
+            if (!dollSing.isPlaying)
+                dollHeadOff.Play(0);
+
+            if (!dollSing.isPlaying)
+                dollSing.PlayDelayed(1);
+        }
+
+        //if (headTime)
+        //    RotHead(180);
+        //else
+        //    RotHead(0);
+    }
+
     private void RotHead(int deg)
     {
         Vector3 direction = new Vector3(Head.rotation.eulerAngles.x, deg, Head.rotation.eulerAngles.z);
         Quaternion targetRotation = Quaternion.Euler(direction);
-        Head.rotation = Quaternion.Lerp(Head.rotation, targetRotation, Time.deltaTime * 3);
+        Head.rotation = Quaternion.Lerp(Head.rotation, targetRotation, Time.deltaTime * speedHeadTurn);
         Vector3 rot = new Vector3(Head.rotation.eulerAngles.x, Head.rotation.eulerAngles.y, Head.rotation.eulerAngles.z);
         //Debug.Log("Head.rotation ============= " + (int)Head.rotation.eulerAngles.y);
         if((int)Head.rotation.eulerAngles.y >= 180 && (int)Head.rotation.eulerAngles.y <= 190)

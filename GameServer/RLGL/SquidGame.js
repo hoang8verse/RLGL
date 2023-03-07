@@ -37,7 +37,7 @@ function originIsAllowed(origin) {
   return true;
 }
 const RoomStores = [];
-function getRoom(len) {
+function getRoom(len, roomId = null) {
     console.log("RoomStores before -------------  ", RoomStores)
     let roomRan = otpGenerator.generate(6, {
         // digits: true,
@@ -46,7 +46,7 @@ function getRoom(len) {
     });
     if(RoomStores.length == 0){
         RoomStores.push({
-            room : roomRan,
+            room : roomId ? roomId : roomRan,
             numPlayer : 1
         })
     } else {
@@ -55,7 +55,7 @@ function getRoom(len) {
             RoomStores[RoomStores.length - 1].numPlayer += 1;
         } else {
             RoomStores.push({
-                room : roomRan,
+                room : roomId ? roomId : roomRan,
                 numPlayer : 1
             })
         }
@@ -102,6 +102,7 @@ wsServer.on('request', function(request) {
 
         // not present: do nothing
         if(! rooms[room][clientId]) return;
+        let checkNewHost = "";
         // if the one exiting is the last one, destroy the room
         if(Object.keys(rooms[room]).length === 1){
             // delete room name
@@ -114,17 +115,32 @@ wsServer.on('request', function(request) {
                 }
             });
 
+           
             delete rooms[room];
         } 
         // otherwise simply leave the room
-        else delete rooms[room][clientId];
-
+        else {
+            if(rooms[room][clientId]["player"]["isHost"] == "1"){
+                Object.entries(rooms[room]).forEach(([, sock]) => {
+                    console.log("leave leave sock aaaa ad=====  " , sock);
+                    if(sock["player"]["id"] != clientId){
+                        rooms[room][sock["player"]["id"]]["isHost"] = "1";
+                        checkNewHost = sock["player"]["id"];
+                        return;
+                    }
+                });
+            }
+            
+            delete rooms[room][clientId];
+        }
         if(rooms[room]) {
-            console.log("leave leave asdadaadaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ");
+            
             Object.entries(rooms[room]).forEach(([, sock]) => {
+                console.log("leave leave sock =====  " , sock["player"]);
                 let params = {
                     event : "playerLeaveRoom",
                     clientId : clientId,
+                    newHost : checkNewHost,
                 }
                 let buffer = Buffer.from(JSON.stringify(params), 'utf8');
                 sock.sendBytes(buffer);
@@ -265,7 +281,7 @@ wsServer.on('request', function(request) {
             if(meta === "requestRoom") {
                 console.log("playerLen =========== binary  " , parseInt(data.playerLen))
 
-                let _room = getRoom(parseInt(data.playerLen));
+                let _room = getRoom(parseInt(data.playerLen), room);
                 console.log("_room nameeeeeeeeeee ===========  " , _room)
                 let params = {
                     event : "roomDetected",
@@ -302,12 +318,12 @@ wsServer.on('request', function(request) {
                     // console.log( "  sock ----------- " , sock.player)
                     players.push(sock.player);
                 });
-                
-                if(players.length == 1){
-                    player.isHost = "1";
-                } else {
-                    player.isHost = "0";
-                }
+                player.isHost = data.isHost;
+                // if(players.length == 1){
+                //     player.isHost = "1";
+                // } else {
+                //     player.isHost = "0";
+                // }
                 let params = {
                     event : "joinRoom",
                     clientId : clientId,
@@ -355,6 +371,17 @@ wsServer.on('request', function(request) {
                 let params = {
                     event : "stopMove",
                     clientId : clientId,
+                }
+                let buffer = Buffer.from(JSON.stringify(params), 'utf8');
+                Object.entries(rooms[room]).forEach(([, sock]) => sock.sendBytes(buffer));
+            }
+            else if(meta === "headTurn") {
+                console.log("headTurn headTurn ===========  " , data)
+                const rnd = Math.random() * 3 + 1;
+                let params = {
+                    event : "headTurn",
+                    clientId : clientId,
+                    speedHeadTurn : rnd,
                 }
                 let buffer = Buffer.from(JSON.stringify(params), 'utf8');
                 Object.entries(rooms[room]).forEach(([, sock]) => sock.sendBytes(buffer));

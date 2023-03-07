@@ -310,7 +310,7 @@ PrefabInstance:
     - target: {fileID: 2403233378627933595, guid: d3057b6f98bfd7a419de063a22df00d2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 34.53
+      value: 38
       objectReference: {fileID: 0}
     - target: {fileID: 2403233378627933595, guid: d3057b6f98bfd7a419de063a22df00d2,
         type: 3}
@@ -758,7 +758,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 6abb252e633ee404884871f741bb7479,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 41.5
+      value: 46.8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6abb252e633ee404884871f741bb7479,
         type: 3}
@@ -1071,10 +1071,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1080, y: 1920}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -3235,12 +3235,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minutes: 1
+  timeValue: 0
   Head: {fileID: 1828670349}
   headTimer: 6
   timeText: {fileID: 1150016645}
   dollSing: {fileID: 1944605657}
   dollHeadOff: {fileID: 1944605656}
   dollHeadOn: {fileID: 1944605655}
+  headTime: 0
+  headTimeFinish: 0
+  headTurnComplete: 0
+  speedHeadTurn: 3
   totalBots: 15
   Bot: {fileID: 3783728510118546129, guid: 31fe792fdec503a49ba5a543498e6b2a, type: 3}
   SpawnArea: {fileID: 1908402618}
@@ -3545,7 +3550,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 006513136bad4e54592975bb55360d0a, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

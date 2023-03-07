@@ -289,10 +289,14 @@ public class SocketClient : MonoBehaviour
                     else if (_clientId != clientId )
                     {
                         Debug.Log("  ===========  other player =================  ");
-                        // other player
-                        otherPlayers[_clientId] = Instantiate(otherPlayerPrefab, pos, SpawnArea.rotation);
-                        otherPlayers[_clientId].name = "otherplayer-" + playerJoinName;
-                        otherPlayers[_clientId].SetActive(true);
+                        if (!otherPlayers.ContainsKey(_clientId))
+                        {
+                            // other player
+                            otherPlayers[_clientId] = Instantiate(otherPlayerPrefab, pos, SpawnArea.rotation);
+                            otherPlayers[_clientId].name = "otherplayer-" + playerJoinName;
+                            otherPlayers[_clientId].SetActive(true);
+                        }
+
                     }
 
                 }
@@ -311,6 +315,12 @@ public class SocketClient : MonoBehaviour
             case "stopMove":
                 if (otherPlayers.ContainsKey(data["clientId"].ToString()))
                     otherPlayers[data["clientId"].ToString()].GetComponent<OtherPlayer>().StopWalking();
+                break;
+
+            case "headTurn":
+                Debug.Log("  headTurn data ==========  " + data);
+                GameManager.instance.speedHeadTurn = float.Parse(data["speedHeadTurn"].ToString());
+                GameManager.instance.DoSingAndHeadTurn();
                 break;
             case "playerDie":
                 Debug.Log("  playerDie data ==========  " + data);
@@ -334,7 +344,7 @@ public class SocketClient : MonoBehaviour
 
                 for (int i = 0; i < players.Count; i++)
                 {
-                    Debug.Log(" players player ideeee   " + players[i]["id"].ToString());
+                    Debug.Log(" players player leave ==   " + players[i].ToString());
                     if (playerLeaveId == players[i]["id"].ToString())
                     {
                         players.RemoveAt(i);
@@ -343,10 +353,13 @@ public class SocketClient : MonoBehaviour
                     }
                 }
 
-                // win 
-                if (players.Count == 1)
+                Debug.Log(" data player leave ==   " + data.ToString());
+                // check new host 
+                string checkNewHost = data["newHost"].ToString();
+                
+                if (checkNewHost != "" && checkNewHost == clientId)
                 {
-
+                    player.GetComponent<PlayerMovement>().isHost = true;
                 }
                 break;
 
@@ -359,17 +372,25 @@ public class SocketClient : MonoBehaviour
         JObject jsData = new JObject();
         jsData.Add("meta", "requestRoom");
         jsData.Add("playerLen", 30);
+        jsData.Add("room", MainMenu.instance.roomId);
 
         Send(Newtonsoft.Json.JsonConvert.SerializeObject(jsData).ToString());
     }
     public void OnJoinRoom()
     {
-        
+        string playerName = MainMenu.instance.playerName;
+
+        if (playerName.Length <= 1 )
+        {
+            playerName = "anonymous";
+        }
+                
         Vector3 ranPos = RandomPosition();
         JObject jsData = new JObject();
         jsData.Add("meta", "join");
         jsData.Add("room", ROOM);
-        jsData.Add("playerName", MainMenu.instance.playerName);
+        jsData.Add("isHost", MainMenu.instance.isHost);
+        jsData.Add("playerName", playerName);
         jsData.Add("pos", ranPos.ToString());
         Send(Newtonsoft.Json.JsonConvert.SerializeObject(jsData));
     }
@@ -380,6 +401,17 @@ public class SocketClient : MonoBehaviour
         jsData.Add("room", ROOM);
 
         Send(Newtonsoft.Json.JsonConvert.SerializeObject(jsData).ToString());
+    }
+    public void OnHeadTurn()
+    {
+        if (!player.GetComponent<PlayerMovement>().isHost) return;
+        JObject jsData = new JObject();
+        jsData.Add("meta", "headTurn");
+        jsData.Add("clientId", clientId);
+        jsData.Add("room", ROOM);
+        jsData.Add("maxTime", GameManager.instance.GetGameTime());
+        jsData.Add("currentTime", GameManager.instance.timeValue);
+        Send(Newtonsoft.Json.JsonConvert.SerializeObject(jsData));
     }
     public void OnMoving()
     {
