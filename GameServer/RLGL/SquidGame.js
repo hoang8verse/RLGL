@@ -152,123 +152,7 @@ wsServer.on('request', function(request) {
 
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
-
-            // var data = JSON.parse(message.utf8Data);
-            // console.log('Received Message: ' +  message.utf8Data);
-            // const { meta, room } = data;
-
-            // if(meta === "requestRoom") {
-            //     console.log("playerLen ===========  " , parseInt(data.playerLen))
-
-            //     let _room = getRoom(parseInt(30));
-            //     console.log("_room nameeeeeeeeeee ===========  " , _room)
-            //     let params = {
-            //         event : "roomDetected",
-            //         clientId : clientId,
-            //         room : _room,
-            //     }
-            //     connection.sendUTF(JSON.stringify(params));
-
-            // }
-            // else if(meta === "join") {
-                               
-            //     // console.log(' clientId ========  ' , clientId);
-
-            //     if(! rooms[room]){
-            //         rooms[room] = {}; // create the room
-            //     } 
-            //     if(! rooms[room][clientId]) rooms[room][clientId] = connection; // join the room
-
-            //     var player = new Player();
-            //     player.id = clientId;
-            //     // player.userName = "Player " + Object.keys(rooms[room]).length;
-            //     player.userName = data.playerName;
-            //     player.room = room;
-
-            //     let playerDiceColor = "";
-            //     if(Object.keys(rooms[room]).length == 1){
-            //         playerDiceColor = "Red";
-            //     } else {
-            //         playerDiceColor = "Green";
-            //     }
-
-            //     player.diceColor = playerDiceColor;
-            //     rooms[room][clientId]["player"] = player;
-            //     let players = [];
-            //     Object.entries(rooms[room]).forEach(([, sock]) => {
-            //         console.log( "  sock ----------- " , sock.player)
-            //         players.push(sock.player);
-            //     });
-                
-            //     Object.entries(rooms[room]).forEach(([, sock]) => {
-            //         console.log( "  sock ----------- " , sock.player)
-            //         let params = {
-            //             event : "joinRoom",
-            //             clientId : clientId,
-            //             playerDiceColor : playerDiceColor,
-            //             playerName : player.userName,
-            //             currentPlayerTurn : "Red",
-            //             players : players,
-            //         }
-            //         sock.sendUTF(JSON.stringify(params))
-            //     });
-               
-            // }
-            // else if(meta === "diceRoll") {
-
-            //     console.log(" diceRoll gotooooooooooo ========================= ");
-            //     const rndInt = Math.floor(Math.random() * 6) + 1;
-            //     let params = {
-            //         event : "rolled",
-            //         clientId : clientId,
-            //         diceRandom : rndInt,
-            //         playerRolled : data.playerDiceColor
-            //     }
-            //     Object.entries(rooms[room]).forEach(([, sock]) => sock.sendUTF(JSON.stringify(params)));
-            // }
-            // else if(meta === "changeTurn") {
-            //     console.log(" changeTurn gotooooooooooo    =========================  ");
-            //     let params = {
-            //         event : "changeTurn",
-            //         clientId : clientId,
-            //         nextPlayerTurn : data.playerTurn,
-            //     }
-            //     Object.entries(rooms[room]).forEach(([, sock]) => sock.sendUTF(JSON.stringify(params)));
-            // }
-            // else if(meta === "diceMove") {
-            //     console.log("diceMove gooooooooooooo ========================= ");
-            //     console.log("diceMove  data.playerDiceColor  " , data.playerDiceColor);
-            //     let params = {
-            //         event : "diceMove",
-            //         clientId : clientId,
-            //         playerMoveColor : data.playerDiceColor,
-            //         funtionMove : data.funtionMove,
-            //     }
-            //     console.log("diceMove params ========================= " ,params);
-            //     Object.entries(rooms[room]).forEach(([, sock]) => sock.sendUTF(JSON.stringify(params)));
-            //     console.log("diceMove senddddddddddddddddddddd ========================= ");
-            // }
-            // else if(meta === "diceWin") {
-
-            //     let params = {
-            //         event : "diceWin",
-            //         clientId : clientId,
-            //         diceColorWin : data.diceColorWin,
-            //     }
-            //     Object.entries(rooms[room]).forEach(([, sock]) => sock.sendUTF(JSON.stringify(params)));
-            // }
-            // else if(meta === "leave") {
-               
-            //     leave(room);
-                
-            // }
-            // else if(! meta) {
-            //     // send the message to all in the room
-            //     Object.entries(rooms[room]).forEach(([, sock]) => sock.sendUTF( JSON.stringify(param) ));
-            // }
-
-
-
+            // plant text
         }
         else if (message.type === 'binary') {
             // console.log('Received Binary Message of ' + message.binaryData + ' bytes');
@@ -292,6 +176,65 @@ wsServer.on('request', function(request) {
                 let buffer = Buffer.from(JSON.stringify(params), 'utf8');
                 
                 connection.sendBytes(buffer);
+            }
+            else if(meta === "joinLobby") {
+                               
+                // console.log(' clientId ========  ' , clientId);
+
+                if(! rooms[room]){
+                    rooms[room] = {}; // create the room
+                } 
+                if(! rooms[room][clientId]) rooms[room][clientId] = connection; // join the room
+
+                var player = new Player();
+                player.id = clientId;
+                // player.playerName = "Player " + Object.keys(rooms[room]).length;
+                player.playerName = data.playerName;
+                player.room = room;
+                console.log( "  new player created  ----------- " , player)
+                // let _pos = parseVector3(data.pos);
+                // console.log("pos :   " , _pos);
+                // player.position = _pos;
+
+                rooms[room][clientId]["player"] = player;// save player in room array
+                let players = [];
+                Object.entries(rooms[room]).forEach(([, sock]) => {
+                    // console.log( "  sock ----------- " , sock.player)
+                    players.push(sock.player);
+                });
+                player.isHost = data.isHost;
+                // if(players.length == 1){
+                //     player.isHost = "1";
+                // } else {
+                //     player.isHost = "0";
+                // }
+                let params = {
+                    event : "joinLobbyRoom",
+                    clientId : clientId,
+                    playerName : player.playerName,
+                    players : players,
+                    isHost : player.isHost,
+                }
+                let buffer = Buffer.from(JSON.stringify(params), 'utf8');
+                Object.entries(rooms[room]).forEach(([, sock]) => {
+                    console.log( "  sock ----------- " , sock.player)
+
+                    sock.sendBytes(buffer);
+                });
+               
+            }
+            else if(meta === "gotoGame") {
+
+                console.log("gotoGame  data ===========  " , data)
+                let params = {
+                    event : "gotoGame",
+                }
+                let buffer = Buffer.from(JSON.stringify(params), 'utf8');
+                console.log("gotoGame  buffer========  " , buffer)
+                // console.log("startGame  rooms[room]========  " , rooms[room])
+                Object.entries(rooms[room]).forEach(([, sock]) => {
+                   sock.sendBytes(buffer) 
+                });
             }
             else if(meta === "join") {
                                
