@@ -94,6 +94,29 @@ public class PlayerMovement : MonoBehaviour
         if (isDying || isPlayerWon || !isReadyStartGame)
             return;
 
+        //if (Input.touchCount > 0)
+        //{
+        //    Touch touch = Input.GetTouch(0);
+
+        //    if (touch.phase == TouchPhase.Began)
+        //    {
+        //        Debug.Log(" ======================== GetMouseButtonDown ===========  ");
+        //        SocketClient.instance.OnMoving();
+        //    }
+        //    else if (touch.phase == TouchPhase.Moved)
+        //    {
+        //        PlayerMovementInput = new Vector3(0, 0f, 1);
+        //        isWalking = true;
+        //    }
+        //    else if (touch.phase == TouchPhase.Ended)
+        //    {
+        //        PlayerMovementInput = Vector3.zero;
+        //        isWalking = false;
+        //        SocketClient.instance.OnStopMove();
+        //        Debug.Log(" ======================== GetMouseButtonUp dasdadadadad ===========  ");
+        //    }
+        //}
+
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         if (Input.GetMouseButtonDown(0)) // 0 : left , 1 : right, 2 : wheel
@@ -105,8 +128,9 @@ public class PlayerMovement : MonoBehaviour
         {
             PlayerMovementInput = new Vector3(0, 0f, 1);
             isWalking = true;
-            
-        } else if (Input.GetMouseButtonUp(0))
+            Debug.Log(" ======================== GetMouseButton movingggggggggggggggggggggggggg ===========  ");
+        } 
+        if (Input.GetMouseButtonUp(0))
         {
             PlayerMovementInput = Vector3.zero;
             isWalking = false;
@@ -257,6 +281,7 @@ public class PlayerMovement : MonoBehaviour
     {
         EndGameScreen.SetActive(true);
         PlayerName.gameObject.SetActive(false);
+        SocketClient.instance.OnCloseConnectSocket();
     }
 
     public void AddPlayerResult(string playerName, string playerStatus, int index)

@@ -37,8 +37,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     GameObject Bot;
 
-    [SerializeField]
-    Transform SpawnArea;
+
+    public Transform DeathZone;
+    public Transform SpawnArea;
 
     public Transform DollTransfrom;
     public Transform TreeTransfrom;
@@ -57,6 +58,8 @@ public class GameManager : MonoBehaviour
         headTime = false;
         headTurnComplete = false;
         timeValue = minutes * 60;
+
+        SocketClient.instance.OnJoinRoom();
     }
 
     public int GetGameTime()
