@@ -10,7 +10,8 @@ public class GenerateQRCode : MonoBehaviour
     {
         string qrCode = MainMenu.instance.roomId;
         Texture2D qrCodeTexture = GenerateQRCodeTexture(qrCode, 256, 256);
-        GetComponent<Renderer>().material.mainTexture = qrCodeTexture;
+        //GetComponent<Renderer>().material.mainTexture = qrCodeTexture;
+        GetComponent<UnityEngine.UI.RawImage>().texture = qrCodeTexture;
     }
 
     private Texture2D GenerateQRCodeTexture(string text, int width, int height)
