@@ -262,7 +262,12 @@ public class SocketClient : MonoBehaviour
                 OnJoinLobbyRoom();
 
                 break;
+            case "failJoinRoom":
+                Debug.Log("  failJoinRoom =================  " + data);
+                MainMenu.instance.ShowFailScreen(data["message"].ToString());
+                break;
             case "joinLobbyRoom":
+                MainMenu.instance.ShowLobby();
                 players = JArray.Parse(data["players"].ToString());
 
                 currentPlayerJoined = players.Count;
@@ -281,30 +286,6 @@ public class SocketClient : MonoBehaviour
                 {
                     MainMenu.instance.AddPlayerJoinRoom(data["clientId"].ToString(), data["playerName"].ToString(), players.Count - 1);
                 }
-               
-
-                //foreach (var _player in players)
-                //{
-                //    string _clientId = _player["id"].ToString();
-                //    playerJoinName = _player["playerName"].ToString();
-                //    Debug.Log(" clientId =================  " + clientId + "   ---   _clientId ==  " + _clientId);
-
-                //    if (_clientId == clientId && player == null)
-                //    {
-
-                //    }
-                //    else if (_clientId != clientId)
-                //    {
-                //        Debug.Log("  ===========  other player =================  ");
-                //        if (!otherPlayers.ContainsKey(_clientId))
-                //        {
-                //            // other player
-
-                //        }
-
-                //    }
-
-                //}
 
                 break;
             case "gotoGame":
@@ -437,11 +418,12 @@ public class SocketClient : MonoBehaviour
     }
     public void OnRequestRoom()
     {
+        string room = MainMenu.instance.roomId;
         JObject jsData = new JObject();
         jsData.Add("meta", "requestRoom");
         jsData.Add("playerLen", 30);
-        jsData.Add("room", MainMenu.instance.roomId);
-
+        jsData.Add("room", room);
+        jsData.Add("host", MainMenu.instance.isHost);
         Send(Newtonsoft.Json.JsonConvert.SerializeObject(jsData).ToString());
     }
     public void OnJoinLobbyRoom()

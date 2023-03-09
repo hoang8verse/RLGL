@@ -16,6 +16,10 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private GameObject joinRoomScreen;
     [SerializeField]
+    private GameObject failJoinRoomScreen;
+    [SerializeField]
+    private TMPro.TextMeshProUGUI failMessage;
+    [SerializeField]
     private GameObject hostButtonJoinGame;
     [SerializeField]
     private Transform transformPlayers;
@@ -108,11 +112,19 @@ public class MainMenu : MonoBehaviour
     public void JoinRoom()
     {
         RoomId.text = roomId;
+
         if (playerName.Length <= 1)
         {
             playerName = "anonymous";
         }
         SocketClient.instance.OnConnectWebsocket();
+        //createRoomScreen.SetActive(true);
+        //homeScreen.SetActive(false);
+        //joinRoomScreen.SetActive(false);
+        //CheckTheHost();
+    }
+    public void ShowLobby()
+    {
         createRoomScreen.SetActive(true);
         homeScreen.SetActive(false);
         joinRoomScreen.SetActive(false);
@@ -140,6 +152,22 @@ public class MainMenu : MonoBehaviour
         homeScreen.SetActive(false);
         isHost = "0";
     }
+    public void ShowFailScreen(string message)
+    {
+        failMessage.text = message;
+        homeScreen.SetActive(false);
+        joinRoomScreen.SetActive(false);
+        createRoomScreen.SetActive(false);
+        failJoinRoomScreen.SetActive(true);
+    }
+
+    public void FailToJoinRoom()
+    {
+        homeScreen.SetActive(true);
+        joinRoomScreen.SetActive(false);
+        createRoomScreen.SetActive(false);
+        failJoinRoomScreen.SetActive(false);
+    }
 
     public void AddPlayerJoinRoom(string _clientId, string _playerName, int index)
     {
@@ -162,6 +190,11 @@ public class MainMenu : MonoBehaviour
         listPlayers[_clientId] = Instantiate(user.gameObject, transformPlayers);
         listPlayers[_clientId].transform.localPosition = pos;
         playerPrefab.gameObject.SetActive(false);
+    }
+
+    public void CopyToClipboard()
+    {
+        GUIUtility.systemCopyBuffer = roomId;
     }
 
 }

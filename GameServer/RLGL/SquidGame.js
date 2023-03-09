@@ -87,7 +87,7 @@ wsServer.on('request', function(request) {
       console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
       return;
     }
-    
+
     // remove echo-protocol
     var connection = request.accept("", request.origin);
     // var connection = request.accept( request.origin);
@@ -99,25 +99,25 @@ wsServer.on('request', function(request) {
     });
     console.log("clientId ===================   " ,clientId);
     const leave = room => {
-
+        console.log("_room leave leave ===========  " , room)
         // not present: do nothing
         if(! rooms[room][clientId]) return;
         let checkNewHost = "";
         // if the one exiting is the last one, destroy the room
         if(Object.keys(rooms[room]).length === 1){
             // delete room name
-            RoomStores.forEach(roomPlayer => {
-                if(roomPlayer.room == room){
-                    var index = RoomStores.indexOf(roomPlayer);
-                    if (index > -1) {
-                        RoomStores.splice(index, 1);
-                    }
-                }
-            });
+            // RoomStores.forEach(roomPlayer => {
+            //     if(roomPlayer.room == room){
+            //         var index = RoomStores.indexOf(roomPlayer);
+            //         if (index > -1) {
+            //             RoomStores.splice(index, 1);
+            //         }
+            //     }
+            // });
 
-           
+
             delete rooms[room];
-        } 
+        }
         // otherwise simply leave the room
         else {
             if(rooms[room][clientId]["player"]["isHost"] == "1"){
@@ -130,11 +130,11 @@ wsServer.on('request', function(request) {
                     }
                 });
             }
-            
+
             delete rooms[room][clientId];
         }
         if(rooms[room]) {
-            
+
             Object.entries(rooms[room]).forEach(([, sock]) => {
                 console.log("leave leave sock =====  " , sock["player"]);
                 let params = {
@@ -165,8 +165,35 @@ wsServer.on('request', function(request) {
             if(meta === "requestRoom") {
                 console.log("playerLen =========== binary  " , parseInt(data.playerLen))
 
-                let _room = getRoom(parseInt(data.playerLen), room);
-                console.log("_room nameeeeeeeeeee ===========  " , _room)
+                let host = data['host'];
+                // let _room = getRoom(parseInt(data.playerLen), room);
+                let _room;
+                if(host == "1"){
+                    _room = room;
+                } else {
+                    _room = room.substring(0,room.length-1);
+                    if(!rooms[_room]){
+                        let params = {
+                            event : "failJoinRoom",
+                            clientId : clientId,
+                            room : _room,
+                            message : "Room id : " + _room + " is not availiable! Please try again.",
+                        }
+                        let buffer = Buffer.from(JSON.stringify(params), 'utf8');
+                        connection.sendBytes(buffer);
+
+                        return;
+                    }
+                }
+                // console.log("_room nameeeeeeeeeee _room ===========  " , _room.length)
+                // console.log("_room nameeeeeeeeeee adadadad ===========  " , room.length)
+                // for (let index = 0; index < room.length; index++) {
+                //     console.log(" roomm text id ===========  " , room[index])
+                // }
+                // if(_room == room){
+                //     console.log("_room correct rooommmm adadadad ===========  " )
+                // }
+
                 let params = {
                     event : "roomDetected",
                     clientId : clientId,
@@ -174,17 +201,20 @@ wsServer.on('request', function(request) {
                 }
                 // let bufferArr = str2ab(JSON.stringify(params));
                 let buffer = Buffer.from(JSON.stringify(params), 'utf8');
-                
+
                 connection.sendBytes(buffer);
             }
             else if(meta === "joinLobby") {
-                               
-                // console.log(' clientId ========  ' , clientId);
 
-                if(! rooms[room]){
+                console.log(' rooms[room] before ========  ' , rooms);
+
+                if(!rooms[room]){
                     rooms[room] = {}; // create the room
-                } 
+                    // console.log(" created new aaaaaaaaaaaa room ===========  " , rooms)
+
+                }
                 if(! rooms[room][clientId]) rooms[room][clientId] = connection; // join the room
+                // console.log(' rooms[room] 111111111111 ========  ' , rooms);
 
                 var player = new Player();
                 player.id = clientId;
@@ -221,7 +251,7 @@ wsServer.on('request', function(request) {
 
                     sock.sendBytes(buffer);
                 });
-               
+
             }
             else if(meta === "gotoGame") {
 
@@ -233,16 +263,16 @@ wsServer.on('request', function(request) {
                 console.log("gotoGame  buffer========  " , buffer)
                 // console.log("startGame  rooms[room]========  " , rooms[room])
                 Object.entries(rooms[room]).forEach(([, sock]) => {
-                   sock.sendBytes(buffer) 
+                   sock.sendBytes(buffer)
                 });
             }
             else if(meta === "join") {
-                               
+
                 // console.log(' clientId ========  ' , clientId);
 
                 if(! rooms[room]){
                     rooms[room] = {}; // create the room
-                } 
+                }
                 if(! rooms[room][clientId]) rooms[room][clientId] = connection; // join the room
 
                 var player = new Player();
@@ -280,7 +310,7 @@ wsServer.on('request', function(request) {
 
                     sock.sendBytes(buffer);
                 });
-               
+
             }
             else if(meta === "startGame") {
 
@@ -293,7 +323,7 @@ wsServer.on('request', function(request) {
                 console.log("startGame  buffer========  " , buffer)
                 // console.log("startGame  rooms[room]========  " , rooms[room])
                 Object.entries(rooms[room]).forEach(([, sock]) => {
-                   sock.sendBytes(buffer) 
+                   sock.sendBytes(buffer)
                 });
             }
             else if(meta === "moving") {
@@ -305,9 +335,9 @@ wsServer.on('request', function(request) {
                 }
                 let buffer = Buffer.from(JSON.stringify(params), 'utf8');
                 Object.entries(rooms[room]).forEach(([, sock]) => {
-                   sock.sendBytes(buffer) 
+                   sock.sendBytes(buffer)
                 });
-               
+
             }
             else if(meta === "stopMove") {
                 console.log("stopMove stopMove data ===========  " , data)
@@ -367,16 +397,16 @@ wsServer.on('request', function(request) {
                 Object.entries(rooms[room]).forEach(([, sock]) => sock.sendBytes(buffer));
             }
             else if(meta === "leave") {
-               
+
                 leave(room);
-                
+
             }
             else if(! meta) {
                 // send the message to all in the room
 
                 // Object.entries(rooms[room]).forEach(([, sock]) => sock.sendBytes( JSON.stringify(param) ));
             }
-            
+
         }
     });
 
