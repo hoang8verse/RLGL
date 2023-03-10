@@ -18,6 +18,9 @@ public class OtherPlayer : MonoBehaviour
     [SerializeField]
     AudioSource shoot;
 
+    [SerializeField]
+    AudioSource die;
+
     private bool isDying;
     private bool isWalking;
 
@@ -49,15 +52,16 @@ public class OtherPlayer : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, 0, TargetEnd.position.z), step);
 
         anim.SetBool("isWalking", true);
-        feetSteps.loop = true;
-        feetSteps.Play(0);
+        //feetSteps.loop = true;
+        //feetSteps.Play(0);
     }
 
     public void StopWalking()
     {
         isWalking = false;
         anim.SetBool("isWalking", false);
-        feetSteps.loop = false;
+        //feetSteps.loop = false;
+        //feetSteps.Stop();
     }
 
     public void SetDeadPlayer()
@@ -68,10 +72,10 @@ public class OtherPlayer : MonoBehaviour
 
     IEnumerator DeadthAnimation()
     {
+        shoot.Play(0);
+        die.PlayDelayed(.2f);
         yield return new WaitForSeconds(Random.Range(0f, 1f));
         anim.SetBool("isDying", true);
-        feetSteps.Stop();
-        shoot.Play(0);
+        feetSteps.Stop();        
     }
-
 }

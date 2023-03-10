@@ -49,6 +49,12 @@ public class PlayerMovement : MonoBehaviour
     AudioSource feetSteps;
     [SerializeField]
     AudioSource shoot;
+    [SerializeField]
+    AudioSource die;
+    [SerializeField]
+    AudioSource bg_Win;
+    [SerializeField]
+    AudioSource bg_Die;
 
     public Transform deathZone;
 
@@ -125,12 +131,13 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log(" ======================== GetMouseButtonDown ===========  ");
             SocketClient.instance.OnMoving();
+            PlayerMovementInput = new Vector3(0, 0f, 1);
+            isWalking = true;
         }
         if (Input.GetMouseButton(0)) // 0 : left , 1 : right, 2 : wheel
         {
             //anim.Play("Walk");
-            PlayerMovementInput = new Vector3(0, 0f, 1);
-            isWalking = true;
+
             Debug.Log(" ======================== GetMouseButton movingggggggggggggggggggggggggg ===========  ");
         } 
         else if (Input.GetMouseButtonUp(0))
@@ -149,7 +156,7 @@ public class PlayerMovement : MonoBehaviour
         PlayerMouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         //Debug.Log(" PlayerMouseInput :::::  Horizontal h  " + h + "     Vertical v     " + v);
 
-        CheckJumping();
+        //CheckJumping();
         CheckMoving();
         MovePlayer();
         //MovePlayerCamera();
@@ -157,13 +164,14 @@ public class PlayerMovement : MonoBehaviour
         //isWalking = (h != 0 || v != 0);
         //anim.SetBool("isWalking", isWalking);
 
-        if (isWalking && !isJumping && !feetSteps.isPlaying)
-        {
-            feetSteps.loop = true;
-            feetSteps.Play(0);
-        }
-        else
-            feetSteps.loop = false;
+        //if (isWalking && !isJumping && !feetSteps.isPlaying)
+        //{
+        //    feetSteps.loop = true;
+        //    feetSteps.Play(0);
+        //}
+        //else
+        //    //feetSteps.loop = false;
+        //    feetSteps.Stop();
 
         CheckDeathTime();
     }
@@ -220,8 +228,9 @@ public class PlayerMovement : MonoBehaviour
 
             isDying = true;
             anim.SetBool("isDying", true);
-            feetSteps.Stop();
+            //feetSteps.Stop();
             shoot.Play(0);
+            die.PlayDelayed(.2f);
         }
     }
 
@@ -236,7 +245,7 @@ public class PlayerMovement : MonoBehaviour
             SocketClient.instance.OnPlayerWin();
 
             anim.SetBool("isWalking", false);
-            feetSteps.Stop();
+            //feetSteps.Stop();
         }
     }
 
@@ -281,11 +290,20 @@ public class PlayerMovement : MonoBehaviour
     
     public void PlayAgain()
     {
+        if (isPlayerWon)
+            bg_Win.Stop();
+        else
+            bg_Die.Stop();
         isReadyStartGame = false;
         SceneManager.LoadScene("MainMenu");
     }
     public void EnableEndGameScreen()
     {
+        if (isPlayerWon)
+            bg_Win.Play();
+        else
+            bg_Die.Play();
+
         EndGameScreen.SetActive(true);
         PlayerName.gameObject.SetActive(false);
         SocketClient.instance.OnCloseConnectSocket();
