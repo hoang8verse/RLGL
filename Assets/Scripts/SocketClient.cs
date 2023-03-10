@@ -46,10 +46,14 @@ public class SocketClient : MonoBehaviour
     //Transform deathZone;
 
     [SerializeField]
-    private GameObject playerPrefab;
+    private GameObject playerMenPrefab;
+    [SerializeField]
+    private GameObject playerWomenPrefab;
     public GameObject player = null;
     [SerializeField]
-    private GameObject otherPlayerPrefab;
+    private GameObject otherPlayerMenPrefab;
+    [SerializeField]
+    private GameObject otherPlayerWomenPrefab;
     public JArray players;
 
     private Dictionary<string,GameObject> otherPlayers;
@@ -94,7 +98,7 @@ public class SocketClient : MonoBehaviour
         Vector3 range = GameManager.instance.SpawnArea.localScale / 2.0f;
         Vector3 randomRange = new Vector3(Random.Range(-range.x, range.x),
                                           Random.Range(-range.y, range.y),
-                                          Random.Range(0, range.z));
+                                          2/*Random.Range(0, range.z)*/);
         Vector3 randomCoordinate = origin + randomRange;
         return randomCoordinate;
     }
@@ -311,7 +315,14 @@ public class SocketClient : MonoBehaviour
                         Debug.Log("  ===========  player =================  " );
                         //  player
                         
-                        player = Instantiate(playerPrefab, pos, GameManager.instance.SpawnArea.rotation);
+                        if(_player["gender"].ToString() == "0")
+                        {
+                            player = Instantiate(playerMenPrefab, pos, GameManager.instance.SpawnArea.rotation);
+                        }
+                        else
+                        {
+                            player = Instantiate(playerWomenPrefab, pos, GameManager.instance.SpawnArea.rotation);
+                        }
                         player.name = "Player-" + playerJoinName;
                         player.GetComponent<PlayerMovement>().deathZone = GameManager.instance.DeathZone;
                         isHost = _player["isHost"].ToString() == "1";
@@ -327,7 +338,15 @@ public class SocketClient : MonoBehaviour
                         if (!otherPlayers.ContainsKey(_clientId))
                         {
                             // other player
-                            otherPlayers[_clientId] = Instantiate(otherPlayerPrefab, pos, GameManager.instance.SpawnArea.rotation);
+                            if (_player["gender"].ToString() == "0")
+                            {
+                                otherPlayers[_clientId] = Instantiate(otherPlayerMenPrefab, pos, GameManager.instance.SpawnArea.rotation);
+                            }
+                            else
+                            {
+                                otherPlayers[_clientId] = Instantiate(otherPlayerWomenPrefab, pos, GameManager.instance.SpawnArea.rotation);
+                            }
+
                             otherPlayers[_clientId].name = "otherplayer-" + playerJoinName;
                             otherPlayers[_clientId].SetActive(true);
                         }

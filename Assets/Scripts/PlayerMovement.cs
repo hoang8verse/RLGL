@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 PlayerMouseInput;
     private float xRot;
 
+    [SerializeField]
     private Transform TargetEnd;
     [SerializeField]
     private Animator anim;
@@ -73,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
-        TargetEnd = GameObject.Find("TargetEnd").transform;
+        
         ReadyScreen.SetActive(true);
         EndGameScreen.SetActive(false);
         GameTimer.text = "";
@@ -86,7 +87,8 @@ public class PlayerMovement : MonoBehaviour
             transform.position.x,
             GameManager.instance.TreeTransfrom.position.y,
             GameManager.instance.TreeTransfrom.position.z
-    );
+        );
+        TargetEnd = GameManager.instance.TargetEnd.transform;
     }
     // Update is called once per frame
     void Update()
@@ -126,17 +128,22 @@ public class PlayerMovement : MonoBehaviour
         }
         if (Input.GetMouseButton(0)) // 0 : left , 1 : right, 2 : wheel
         {
+            //anim.Play("Walk");
             PlayerMovementInput = new Vector3(0, 0f, 1);
             isWalking = true;
             Debug.Log(" ======================== GetMouseButton movingggggggggggggggggggggggggg ===========  ");
         } 
-        if (Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(0))
         {
+            anim.Play("Idle");
             PlayerMovementInput = Vector3.zero;
             isWalking = false;
             SocketClient.instance.OnStopMove();
             Debug.Log(" ======================== GetMouseButtonUp dasdadadadad ===========  ");
         }
+        Debug.Log("  isWalking :::   " + isWalking);
+
+
         anim.SetBool("isWalking", isWalking);
         //Debug.Log(" PlayerMovementInput -===========  " + PlayerMovementInput);
         PlayerMouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
@@ -194,7 +201,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void CheckMoving()
     {
-        isMoving = isJumping || isWalking;
+        isMoving = isWalking;
     }
 
     private void CheckDeathTime()

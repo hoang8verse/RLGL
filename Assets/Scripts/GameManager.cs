@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
 
     public Transform DeathZone;
     public Transform SpawnArea;
+    public Transform TargetEnd;
 
     public Transform DollTransfrom;
     public Transform TreeTransfrom;

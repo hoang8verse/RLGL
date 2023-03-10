@@ -1251,6 +1251,7 @@ MonoBehaviour:
   clientId: 
   playerJoinName: 
   currentPlayerJoined: 0
+  isHost: 0
   playerPrefab: {fileID: 2046283011677903265}
   player: {fileID: 0}
   otherPlayerPrefab: {fileID: 413940877253282311, guid: 506ff9c0dade13940a3a22a7aec16f24,
@@ -1993,6 +1994,7 @@ MonoBehaviour:
   Bot: {fileID: 3783728510118546129, guid: 31fe792fdec503a49ba5a543498e6b2a, type: 3}
   DeathZone: {fileID: 158964774}
   SpawnArea: {fileID: 1908402618}
+  TargetEnd: {fileID: 698990589}
   DollTransfrom: {fileID: 746740177}
   TreeTransfrom: {fileID: 714170644}
 --- !u!82 &1944605654

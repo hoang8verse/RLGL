@@ -3306,10 +3306,14 @@ MonoBehaviour:
   playerJoinName: 
   currentPlayerJoined: 0
   isHost: 0
-  playerPrefab: {fileID: 2877699490280879704, guid: 9d7e5278e3adda24daf00ec1db84ae40,
+  playerMenPrefab: {fileID: 2412958222268237556, guid: 914ed1c19fba5bb4d990fd4985c5220f,
+    type: 3}
+  playerWomenPrefab: {fileID: 3643826304232633018, guid: b97b2f5ca58b26d42825e603f020bbc2,
     type: 3}
   player: {fileID: 0}
-  otherPlayerPrefab: {fileID: 413940877253282311, guid: 506ff9c0dade13940a3a22a7aec16f24,
+  otherPlayerMenPrefab: {fileID: 1314719577604660228, guid: a2bec2b9ebbf11e42b4efa9bfad8efc4,
+    type: 3}
+  otherPlayerWomenPrefab: {fileID: 3956389285194121412, guid: ed26464e043bf7b44893b04cf5e004f7,
     type: 3}
 --- !u!4 &1458366565
 Transform:
