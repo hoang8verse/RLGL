@@ -29,6 +29,13 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private TMPro.TextMeshProUGUI RoomId;
 
+    [SerializeField]
+    AudioSource bg_Music;
+    [SerializeField]
+    private AudioSource bg_Win;
+    [SerializeField]
+    private AudioSource bg_Die;
+
     public string playerName = "anonymous";
     public string roomId = "";
     public string isHost = "0";
@@ -69,6 +76,7 @@ public class MainMenu : MonoBehaviour
 
         homeScreen.SetActive(true);
         listPlayers = new Dictionary<string, GameObject>();
+        bg_Music.Play(0);
     }
     private void Update()
     {
@@ -137,6 +145,7 @@ public class MainMenu : MonoBehaviour
     }
     public void GotoGame()
     {
+        bg_Music.Stop();
         SceneManager.LoadScene("Game");
     }
     public void HostCreateNewRoom()

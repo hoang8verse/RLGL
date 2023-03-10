@@ -25,6 +25,10 @@ public class GameManager : MonoBehaviour
     private AudioSource dollHeadOff;
     [SerializeField]
     private AudioSource dollHeadOn;
+    [SerializeField]
+    private AudioSource dollScan;
+    [SerializeField]
+    private AudioSource bg_Music;
 
     public bool headTime;
     public bool headTimeFinish;
@@ -61,6 +65,7 @@ public class GameManager : MonoBehaviour
         timeValue = minutes * 60;
 
         SocketClient.instance.OnJoinRoom();
+        bg_Music.Play();
     }
 
     public int GetGameTime()
@@ -144,6 +149,8 @@ public class GameManager : MonoBehaviour
             headTimeFinish = true;
             RotHead(180);
             isReadyStartGame = false;
+            bg_Music.Stop();
+            dollSing.Stop();
             // set end game
             SocketClient.instance.OnEndGame();
             return;
@@ -159,6 +166,7 @@ public class GameManager : MonoBehaviour
             if (headTime)
             {
                 dollHeadOn.Play(0);
+                dollScan.PlayDelayed(.2f);
             }
             else
             {
@@ -181,11 +189,14 @@ public class GameManager : MonoBehaviour
         if (headTime)
         {
             dollHeadOn.Play(0);
+            dollScan.PlayDelayed(1);
         }
         else
         {
             if (!dollSing.isPlaying)
+            {
                 dollHeadOff.Play(0);
+            }
 
             if (!dollSing.isPlaying)
                 dollSing.PlayDelayed(1);
