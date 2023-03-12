@@ -78,6 +78,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private Transform ResultTransfrom;
 
+    [SerializeField]
+    private Transform txtPlayerName;
+    private string str_PlayerName;
+
     void Start()
     {
         
@@ -286,6 +290,8 @@ public class PlayerMovement : MonoBehaviour
     public void SetPlayerName(string name)
     {
         PlayerName.text = name;
+        str_PlayerName = name;
+        GameManager.instance.isShowGUI = true;
     }
     
     public void PlayAgain()
@@ -306,6 +312,7 @@ public class PlayerMovement : MonoBehaviour
 
         EndGameScreen.SetActive(true);
         PlayerName.gameObject.SetActive(false);
+        GameManager.instance.isShowGUI = false;
         SocketClient.instance.OnCloseConnectSocket();
     }
 
@@ -332,5 +339,18 @@ public class PlayerMovement : MonoBehaviour
         GameObject resultPlayer = Instantiate(user.gameObject, EndGameScreen.transform);
         resultPlayer.transform.localPosition = pos;
         ResultTransfrom.gameObject.SetActive(false);
+    }
+
+    void OnGUI()
+    {
+
+        if (GameManager.instance.isShowGUI)
+        {
+            GUIStyle headStyle = new GUIStyle();
+            headStyle.fontSize = 10;
+            headStyle.alignment = TextAnchor.UpperCenter;
+            Vector3 pos = Camera.main.WorldToScreenPoint(txtPlayerName.position);
+            GUI.Label(new Rect(pos.x - 50, Screen.height - pos.y, 100, 20), str_PlayerName, headStyle);
+        }
     }
 }

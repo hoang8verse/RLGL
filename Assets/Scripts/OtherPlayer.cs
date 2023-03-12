@@ -21,6 +21,11 @@ public class OtherPlayer : MonoBehaviour
     [SerializeField]
     AudioSource die;
 
+    [SerializeField]
+    private Transform txtPlayerName;
+
+    private string str_PlayerName;
+
     private bool isDying;
     private bool isWalking;
 
@@ -77,5 +82,22 @@ public class OtherPlayer : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(0f, 1f));
         anim.SetBool("isDying", true);
         feetSteps.Stop();        
+    }
+
+    public void SetPlayerName(string name)
+    {
+        str_PlayerName = name;
+    }
+
+    void OnGUI()
+    {
+        if (GameManager.instance.isShowGUI)
+        {
+            GUIStyle headStyle = new GUIStyle();
+            headStyle.fontSize = 10;
+            headStyle.alignment = TextAnchor.UpperCenter;
+            Vector3 pos = Camera.main.WorldToScreenPoint(txtPlayerName.position);
+            GUI.Label(new Rect(pos.x - 50, Screen.height - pos.y, 100, 20), str_PlayerName, headStyle);
+        }
     }
 }

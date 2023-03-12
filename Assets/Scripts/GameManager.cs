@@ -51,6 +51,8 @@ public class GameManager : MonoBehaviour
 
     static bool isReadyStartGame =  false;
 
+    public bool isShowGUI = false;
+
     // Start is called before the first frame update
     void Start()
     {

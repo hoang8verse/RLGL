@@ -348,6 +348,7 @@ public class SocketClient : MonoBehaviour
                             }
 
                             otherPlayers[_clientId].name = "otherplayer-" + playerJoinName;
+                            otherPlayers[_clientId].GetComponent<OtherPlayer>().SetPlayerName(playerJoinName);
                             otherPlayers[_clientId].SetActive(true);
                         }
 
