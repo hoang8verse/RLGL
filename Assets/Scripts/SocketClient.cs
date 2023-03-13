@@ -15,6 +15,7 @@ using Newtonsoft.Json.Linq;
 // Use plugin namespace
 using NativeWebSocket;
 using Random = UnityEngine.Random;
+using System.Globalization;
 
 public class SocketClient : MonoBehaviour
 {
@@ -66,7 +67,10 @@ public class SocketClient : MonoBehaviour
             Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
-
+        Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+    }
+    void Start()
+    {        
         //OnConnectWebsocket();
 
         otherPlayers = new Dictionary<string, GameObject>();
