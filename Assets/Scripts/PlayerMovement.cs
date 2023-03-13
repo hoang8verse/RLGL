@@ -15,8 +15,6 @@ public class PlayerMovement : MonoBehaviour
     private Transform TargetEnd;
     [SerializeField]
     private Animator anim;
-
-    private bool isJumping;
     private bool isWalking;
     private bool isMoving;
     private bool isDying;
@@ -151,27 +149,12 @@ public class PlayerMovement : MonoBehaviour
         Debug.Log("  isWalking :::   " + isWalking);
 
 
-        anim.SetBool("isWalking", isWalking);
-        //Debug.Log(" PlayerMovementInput -===========  " + PlayerMovementInput);
         PlayerMouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         //Debug.Log(" PlayerMouseInput :::::  Horizontal h  " + h + "     Vertical v     " + v);
 
         //CheckJumping();
         CheckMoving();
         MovePlayer();
-        //MovePlayerCamera();
-
-        //isWalking = (h != 0 || v != 0);
-        //anim.SetBool("isWalking", isWalking);
-
-        //if (isWalking && !isJumping && !feetSteps.isPlaying)
-        //{
-        //    feetSteps.loop = true;
-        //    feetSteps.Play(0);
-        //}
-        //else
-        //    //feetSteps.loop = false;
-        //    feetSteps.Stop();
 
         CheckDeathTime();
     }
@@ -185,27 +168,17 @@ public class PlayerMovement : MonoBehaviour
         float step = Speed * Time.deltaTime;
         //transform.position = Vector3.MoveTowards(transform.position, TargetEnd.position, step);
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, 0, TargetEnd.position.z), step);
-
-        if (Input.GetKeyDown(KeyCode.Space))
+    }
+    private void PlayAnimationSmoothly(string animationName, float delayTime)
+    {
+        if (animationPlaying == animationName)
         {
-            if (!isJumping)
-                PlayerBody.AddForce(Vector3.up * Jumpforce, ForceMode.Impulse);
+            Debug.LogWarning(animationName + " is playing");
+            return;
         }
-    }
-
-    private void MovePlayerCamera()
-    {
-        xRot -= PlayerMouseInput.y * Sensitivity;
-
-        transform.Rotate(0f, PlayerMouseInput.x * Sensitivity, 0f);
-        PlayerCamera.transform.localRotation = Quaternion.Euler(xRot, 0f, 0f);
-    }
-
-    private void CheckJumping()
-    {
-        isJumping = !Physics.CheckSphere(FeetTransform.position, 0.1f, FloorMask);
-        anim.SetBool("isJumping", isJumping);
-    }
+        animationPlaying = animationName;        
+        anim.CrossFadeInFixedTime(animationName, delayTime);        
+    }    
 
     private void CheckMoving()
     {
