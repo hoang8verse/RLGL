@@ -279,9 +279,9 @@ public class PlayerMovement : MonoBehaviour
     public void EnableEndGameScreen()
     {
         if (isPlayerWon)
-            bg_Win.Play();
+            bg_Win.PlayDelayed(1f);
         else
-            bg_Die.Play();
+            bg_Die.PlayDelayed(1f);
 
         EndGameScreen.SetActive(true);
         PlayerName.gameObject.SetActive(false);
