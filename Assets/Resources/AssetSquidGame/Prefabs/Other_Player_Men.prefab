@@ -262,7 +262,7 @@ Transform:
   - {fileID: 7317698610344669448}
   - {fileID: 3567778886859080156}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1314719577604658769
 Animator:
@@ -1489,7 +1489,7 @@ SkinnedMeshRenderer:
   m_GameObject: {fileID: 6562813611220930631}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
