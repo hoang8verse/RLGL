@@ -59,7 +59,7 @@ public class SocketClient : MonoBehaviour
 
     private Dictionary<string,GameObject> otherPlayers;
 
-    void Start()
+    void Awake()
     {
         if (instance == null)
             instance = this;
@@ -98,13 +98,15 @@ public class SocketClient : MonoBehaviour
 
     private Vector3 RandomPosition()
     {
-        Vector3 origin = GameManager.instance.SpawnArea.position;
-        Vector3 range = GameManager.instance.SpawnArea.localScale / 2.0f;
-        Vector3 randomRange = new Vector3(Random.Range(-range.x, range.x),
-                                          Random.Range(-range.y, range.y),
-                                          2/*Random.Range(0, range.z)*/);
-        Vector3 randomCoordinate = origin + randomRange;
-        return randomCoordinate;
+        Vector3 center = GameManager.instance.SpawnArea.position;
+        Vector3 scale = GameManager.instance.SpawnArea.localScale;
+        Vector3 randomPoint = new Vector3(Random.Range(-0.5f, 0.5f),
+                                          2,
+                                          0
+                                          );
+        randomPoint = Vector3.Scale(randomPoint, scale);
+        randomPoint += center;
+        return randomPoint;
     }
 
     public void OnConnectWebsocket()
