@@ -15,10 +15,12 @@ public class PlayerMovement : MonoBehaviour
     private Transform TargetEnd;
     [SerializeField]
     private Animator anim;
+    
     private bool isWalking;
     private bool isMoving;
     private bool isDying;
     private bool isInDeathZone;
+    private string animationPlaying;
 
     [SerializeField]
     private LayerMask FloorMask;
@@ -131,19 +133,22 @@ public class PlayerMovement : MonoBehaviour
             SocketClient.instance.OnMoving();
             PlayerMovementInput = new Vector3(0, 0f, 1);
             isWalking = true;
+            PlayAnimationSmoothly("Walk", 0.25f);
         }
+        else
         if (Input.GetMouseButton(0)) // 0 : left , 1 : right, 2 : wheel
         {
-            //anim.Play("Walk");
-
+            //anim.Play("Walk");            
             Debug.Log(" ======================== GetMouseButton movingggggggggggggggggggggggggg ===========  ");
         } 
-        else if (Input.GetMouseButtonUp(0))
+        else
+        if (Input.GetMouseButtonUp(0))
         {
-            anim.Play("Idle");
+            PlayAnimationSmoothly("Idle", 0.15f);
+
             PlayerMovementInput = Vector3.zero;
             isWalking = false;
-            SocketClient.instance.OnStopMove();
+            SocketClient.instance?.OnStopMove();
             Debug.Log(" ======================== GetMouseButtonUp dasdadadadad ===========  ");
         }
         Debug.Log("  isWalking :::   " + isWalking);
@@ -200,13 +205,13 @@ public class PlayerMovement : MonoBehaviour
             SocketClient.instance.OnPlayerDie();
 
             isDying = true;
-            anim.SetBool("isDying", true);
+            //anim.SetBool("isDying", true);            
+            PlayAnimationSmoothly("Dying", 0.25f);
             //feetSteps.Stop();
             shoot.Play(0);
             die.PlayDelayed(.2f);
         }
     }
-
     private void OnTriggerEnter(Collider other)
     {
         isInDeathZone = other.transform == deathZone;
@@ -217,7 +222,8 @@ public class PlayerMovement : MonoBehaviour
             isPlayerWon = true;
             SocketClient.instance.OnPlayerWin();
 
-            anim.SetBool("isWalking", false);
+            //anim.SetBool("isWalking", false)
+            PlayAnimationSmoothly("Victory", 0.25f);                        
             //feetSteps.Stop();
         }
     }
