@@ -42,7 +42,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 7837031bcb73df04eade5f7a0c8a3a4b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: a6987f82d1101bb4fac813119669ac00, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1232,7 +1232,7 @@ Transform:
   - {fileID: 7053470209963930214}
   - {fileID: 7665477609062983315}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &929299742194193929
 Animator:
