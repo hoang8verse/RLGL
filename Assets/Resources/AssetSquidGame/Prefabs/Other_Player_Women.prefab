@@ -169,7 +169,7 @@ SkinnedMeshRenderer:
   m_GameObject: {fileID: 198836770246724603}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -1232,7 +1232,7 @@ Transform:
   - {fileID: 7053470209963930214}
   - {fileID: 7665477609062983315}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &929299742194193929
 Animator:
