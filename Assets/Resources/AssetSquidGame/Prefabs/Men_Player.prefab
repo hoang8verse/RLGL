@@ -837,7 +837,7 @@ MonoBehaviour:
   FeetTransform: {fileID: 2412958223724021859}
   PlayerCamera: {fileID: 2412958224055485964}
   PlayerBody: {fileID: 2412958222268237560}
-  Speed: 3
+  Speed: 7
   Sensitivity: 3
   Jumpforce: 3
   feetSteps: {fileID: 8436459675018820746}

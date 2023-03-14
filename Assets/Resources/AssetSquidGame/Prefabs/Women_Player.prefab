@@ -2190,7 +2190,7 @@ Transform:
   - {fileID: 1568883150117385982}
   - {fileID: 2663431763937607304}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &3643826304232632998
 Rigidbody:
@@ -2242,7 +2242,7 @@ MonoBehaviour:
   FeetTransform: {fileID: 3643826303195974622}
   PlayerCamera: {fileID: 3643826304535402146}
   PlayerBody: {fileID: 3643826304232632998}
-  Speed: 3
+  Speed: 7
   Sensitivity: 3
   Jumpforce: 3
   feetSteps: {fileID: 1520496906456750868}

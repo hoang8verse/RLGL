@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Space]
 
-    //[SerializeField]
+    [SerializeField]
     private float Speed = 12;
 
     [SerializeField]
