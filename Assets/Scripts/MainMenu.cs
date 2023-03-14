@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Collections;
 
 public class MainMenu : MonoBehaviour
 {
@@ -35,6 +36,10 @@ public class MainMenu : MonoBehaviour
     private AudioSource bg_Win;
     [SerializeField]
     private AudioSource bg_Die;
+    [SerializeField]
+    private TMPro.TMP_InputField inputRoomId;
+    [SerializeField]
+    private TMPro.TMP_InputField inputPlayerName;
 
     public string playerName = "anonymous";
     public string roomId = "";
@@ -74,17 +79,58 @@ public class MainMenu : MonoBehaviour
         else if (instance != this)
             Destroy(gameObject);
 
-        homeScreen.SetActive(true);
+
         listPlayers = new Dictionary<string, GameObject>();
+        StartCoroutine(WaitingReceiver());
+    }
+    IEnumerator WaitingReceiver()
+    {
+        yield return new WaitForSeconds(0.5f);
+        homeScreen.SetActive(true);
+        createRoomScreen.SetActive(false);
+        joinRoomScreen.SetActive(false);
+        failJoinRoomScreen.SetActive(false);
         bg_Music.Play(0);
     }
     private void Update()
     {
         if (myKeyboard != null && myKeyboard.status == TouchScreenKeyboard.Status.Done)
         {
-            Debug.Log("Input: " + myKeyboard.text);
             currentInput.text = myKeyboard.text;
+            if (homeScreen.activeSelf)
+            {
+                inputPlayerName.text = myKeyboard.text;
+                playerName = myKeyboard.text;
+                Debug.Log("Input roomId: " + roomId);
+            }
+            if (joinRoomScreen.activeSelf)
+            {
+                inputRoomId.text = myKeyboard.text;
+                roomId = myKeyboard.text;
+                Debug.Log("Input roomId: " + roomId);
+            }
+
             myKeyboard = null;
+
+        }
+        if (TouchScreenKeyboard.visible && Input.touchCount == 0)
+        {
+            currentInput.text = myKeyboard.text;
+            Debug.Log("Key board value was pressed : " + myKeyboard.text);
+        }
+            
+        
+        if (Input.anyKeyDown)
+        {
+            // Check if any key was pressed down
+            foreach (KeyCode code in Enum.GetValues(typeof(KeyCode)))
+            {
+                if (Input.GetKeyDown(code))
+                {
+                    // The code variable will contain the value of the key that was pressed down
+                    Debug.Log("Key " + code + " was pressed");
+                }
+            }
         }
     }
     public void PlayerNameChange (TMPro.TextMeshProUGUI inputPlayerName)
@@ -125,6 +171,7 @@ public class MainMenu : MonoBehaviour
         {
             playerName = "anonymous";
         }
+
         SocketClient.instance.OnConnectWebsocket();
         //createRoomScreen.SetActive(true);
         //homeScreen.SetActive(false);
