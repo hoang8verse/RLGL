@@ -23,6 +23,7 @@ public class OtherPlayer : MonoBehaviour
 
     private bool isDying;
     private bool isWalking;
+    private string animationPlaying;
 
     // Start is called before the first frame update
     void Start()
@@ -51,31 +52,31 @@ public class OtherPlayer : MonoBehaviour
         float step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, 0, TargetEnd.position.z), step);
 
-        anim.SetBool("isWalking", true);
-        //feetSteps.loop = true;
-        //feetSteps.Play(0);
+        PlayAnimationSmoothly("Walk", 0.15f);
     }
 
     public void StopWalking()
     {
         isWalking = false;
-        anim.SetBool("isWalking", false);
-        //feetSteps.loop = false;
-        //feetSteps.Stop();
+        PlayAnimationSmoothly("Idle", 0.15f);
     }
 
     public void SetDeadPlayer()
     {
         isDying = true;
-        StartCoroutine(DeadthAnimation());
+        shoot.Play(0);        
+        die.PlayDelayed(.2f);
+        PlayAnimationSmoothly("Dying", 0.25f);
     }
 
-    IEnumerator DeadthAnimation()
+    private void PlayAnimationSmoothly(string animationName, float delayTime)
     {
-        shoot.Play(0);
-        die.PlayDelayed(.2f);
-        yield return new WaitForSeconds(Random.Range(0f, 1f));
-        anim.SetBool("isDying", true);
-        feetSteps.Stop();        
+        if (animationPlaying == animationName)
+        {
+            Debug.LogWarning(animationName + " is playing");
+            return;
+        }
+        animationPlaying = animationName;
+        anim.CrossFadeInFixedTime(animationName, delayTime);
     }
 }
