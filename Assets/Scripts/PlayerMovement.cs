@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
 public class PlayerMovement : MonoBehaviour
 {
     private Vector3 PlayerMovementInput;
@@ -36,8 +37,8 @@ public class PlayerMovement : MonoBehaviour
 
     [Space]
 
-    [SerializeField]
-    private float Speed;
+    //[SerializeField]
+    private float Speed = 12;
 
     [SerializeField]
     private float Sensitivity;
@@ -78,6 +79,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private Transform ResultTransfrom;
 
+    bool isRunOnMobile = false;
+
     void Start()
     {
         
@@ -95,6 +98,21 @@ public class PlayerMovement : MonoBehaviour
             GameManager.instance.TreeTransfrom.position.z
         );
         TargetEnd = GameManager.instance.TargetEnd.transform;
+
+        CheckDevice();
+    }
+    void CheckDevice()
+    {
+        if (Application.isMobilePlatform)
+        {
+            Debug.Log("Running on a mobile device.");
+            isRunOnMobile = true;
+        }
+        else
+        {
+            Debug.Log("Running on a non-mobile device.");
+            isRunOnMobile = false;
+        }
     }
     // Update is called once per frame
     void Update()
@@ -102,55 +120,69 @@ public class PlayerMovement : MonoBehaviour
         if (isDying || isPlayerWon || !isReadyStartGame)
             return;
 
-        //if (Input.touchCount > 0)
-        //{
-        //    Touch touch = Input.GetTouch(0);
+        if (isRunOnMobile)
+        {
+            if (Input.touchCount > 0)
+            {
+                Touch touch = Input.GetTouch(0); // trying to get the second touch input
 
-        //    if (touch.phase == TouchPhase.Began)
-        //    {
-        //        Debug.Log(" ======================== GetMouseButtonDown ===========  ");
-        //        SocketClient.instance.OnMoving();
-        //    }
-        //    else if (touch.phase == TouchPhase.Moved)
-        //    {
-        //        PlayerMovementInput = new Vector3(0, 0f, 1);
-        //        isWalking = true;
-        //    }
-        //    else if (touch.phase == TouchPhase.Ended)
-        //    {
-        //        PlayerMovementInput = Vector3.zero;
-        //        isWalking = false;
-        //        SocketClient.instance.OnStopMove();
-        //        Debug.Log(" ======================== GetMouseButtonUp dasdadadadad ===========  ");
-        //    }
-        //}
+                if (touch.phase == TouchPhase.Began)
+                {
+                    Debug.Log(" ======================== GetTouch mobile  down   ===========  ");
+                    SocketClient.instance.OnMoving();
+                    PlayerMovementInput = new Vector3(0, 0f, 1);
+                    isWalking = true;
+                    PlayAnimationSmoothly("Walk", 0.25f);
+                }
+                else if (touch.phase == TouchPhase.Moved)
+                {
+                    Debug.Log(" ================= GetTouch mobile  movingggggggg ===========  ");
+                }
+                else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                {
+                    PlayAnimationSmoothly("Idle", 0.15f);
+
+                    PlayerMovementInput = Vector3.zero;
+                    isWalking = false;
+                    SocketClient.instance?.OnStopMove();
+                    Debug.Log(" ======================== GetTouch mobile  uppppppppp ===========  ");
+                }
+            }
+        }
+        else
+        {
+            if (Input.GetMouseButtonDown(0)) // 0 : left , 1 : right, 2 : wheel
+            {
+                Debug.Log(" ======================== GetMouseButtonDown ===========  ");
+                SocketClient.instance.OnMoving();
+                PlayerMovementInput = new Vector3(0, 0f, 1);
+                isWalking = true;
+                PlayAnimationSmoothly("Walk", 0.25f);
+            }
+            else
+            if (Input.GetMouseButton(0)) // 0 : left , 1 : right, 2 : wheel
+            {
+                //anim.Play("Walk");            
+                Debug.Log(" ======================== GetMouseButton movingggggggggggggggggggggggggg ===========  ");
+            }
+            else
+            if (Input.GetMouseButtonUp(0))
+            {
+                PlayAnimationSmoothly("Idle", 0.15f);
+
+                PlayerMovementInput = Vector3.zero;
+                isWalking = false;
+                SocketClient.instance?.OnStopMove();
+                Debug.Log(" ======================== GetMouseButtonUp dasdadadadad ===========  ");
+            }
+        }
+
+
+
 
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
-        if (Input.GetMouseButtonDown(0)) // 0 : left , 1 : right, 2 : wheel
-        {
-            Debug.Log(" ======================== GetMouseButtonDown ===========  ");
-            SocketClient.instance.OnMoving();
-            PlayerMovementInput = new Vector3(0, 0f, 1);
-            isWalking = true;
-            PlayAnimationSmoothly("Walk", 0.25f);
-        }
-        else
-        if (Input.GetMouseButton(0)) // 0 : left , 1 : right, 2 : wheel
-        {
-            //anim.Play("Walk");            
-            Debug.Log(" ======================== GetMouseButton movingggggggggggggggggggggggggg ===========  ");
-        } 
-        else
-        if (Input.GetMouseButtonUp(0))
-        {
-            PlayAnimationSmoothly("Idle", 0.15f);
-
-            PlayerMovementInput = Vector3.zero;
-            isWalking = false;
-            SocketClient.instance?.OnStopMove();
-            Debug.Log(" ======================== GetMouseButtonUp dasdadadadad ===========  ");
-        }
+        
         Debug.Log("  isWalking :::   " + isWalking);
 
 
