@@ -45,6 +45,8 @@ public class GameManager : MonoBehaviour
     public Transform DeathZone;
     public Transform SpawnArea;
     public Transform TargetEnd;
+    public Transform StartLine;
+    public Transform FinalLine;
 
     public Transform DollTransfrom;
     public Transform TreeTransfrom;
@@ -74,7 +76,20 @@ public class GameManager : MonoBehaviour
     {
         return minutes * 60;
     }
+    public void AdjustEnvironmentRatio(float EnvironmentDistance = 100, int minutesCountDown = 1)
+    {
+        minutes = minutesCountDown;
+        DeathZone.localScale = new Vector3(EnvironmentDistance / 2, DeathZone.localScale.y, DeathZone.localScale.z);
+        
+        StartLine.position = new Vector3(-EnvironmentDistance / 2, 1, 1);
+        FinalLine.position = new Vector3(EnvironmentDistance / 2, 1, 1);
 
+        TargetEnd.position = new Vector3(0, 0, FinalLine.position.x + 1);
+        SpawnArea.position = new Vector3(0, 0, StartLine.position.x - 1);
+
+        DollTransfrom.position = new Vector3(DollTransfrom.position.x, DollTransfrom.position.y, EnvironmentDistance / 2 + 50);
+        TreeTransfrom.position = new Vector3(TreeTransfrom.position.x, TreeTransfrom.position.y, EnvironmentDistance / 2 + 80);
+    }
     public IEnumerator CheckReadyToStart()
     {
         yield return new WaitForSeconds(0.5f);
