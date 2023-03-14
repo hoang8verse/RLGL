@@ -1125,6 +1125,8 @@ MonoBehaviour:
   DeathZone: {fileID: 158964774}
   SpawnArea: {fileID: 1908402618}
   TargetEnd: {fileID: 698990589}
+  StartLine: {fileID: 3746889537654667193}
+  FinalLine: {fileID: 3746889537654667194}
   DollTransfrom: {fileID: 4839280854846851465}
   TreeTransfrom: {fileID: 6514858795255370830}
 --- !u!1 &2137525935
@@ -1332,6 +1334,18 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 02df7f90271dd7d4797790df5786675b, type: 3}
+--- !u!4 &3746889537654667193 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3746889537532991220, guid: 02df7f90271dd7d4797790df5786675b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3746889537654667192}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3746889537654667194 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3746889536849083863, guid: 02df7f90271dd7d4797790df5786675b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3746889537654667192}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4290382324534210553
 PrefabInstance:
   m_ObjectHideFlags: 0

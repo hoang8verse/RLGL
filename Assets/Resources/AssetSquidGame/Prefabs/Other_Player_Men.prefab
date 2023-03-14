@@ -262,7 +262,7 @@ Transform:
   - {fileID: 7317698610344669448}
   - {fileID: 3567778886859080156}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1314719577604658769
 Animator:
@@ -326,7 +326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f346a595e569c234184bb2f292f093f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 7
   anim: {fileID: 1314719577604658769}
   feetSteps: {fileID: 6181887902544562100}
   shoot: {fileID: 3874854812554048423}

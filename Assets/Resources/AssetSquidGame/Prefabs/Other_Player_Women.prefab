@@ -1296,7 +1296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f346a595e569c234184bb2f292f093f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 7
   anim: {fileID: 929299742194193929}
   feetSteps: {fileID: 8762224624750487273}
   shoot: {fileID: 3801068582335297870}

@@ -6,7 +6,7 @@ using UnityEngine;
 public class OtherPlayer : MonoBehaviour
 {
     private Transform TargetEnd;
-    //[SerializeField]
+    [SerializeField]
     private float speed = 12;
 
     [SerializeField]
