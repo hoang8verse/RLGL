@@ -56,6 +56,8 @@ public class PlayerMovement : MonoBehaviour
     AudioSource bg_Win;
     [SerializeField]
     AudioSource bg_Die;
+    [SerializeField]
+    AudioSource finished;
 
     public Transform deathZone;
 
@@ -255,6 +257,7 @@ public class PlayerMovement : MonoBehaviour
             SocketClient.instance.OnPlayerWin();
 
             //anim.SetBool("isWalking", false)
+            finished.Play();
             PlayAnimationSmoothly("Victory", 0.25f);                        
             //feetSteps.Stop();
         }
@@ -311,9 +314,9 @@ public class PlayerMovement : MonoBehaviour
     public void EnableEndGameScreen()
     {
         if (isPlayerWon)
-            bg_Win.PlayDelayed(1f);
+            bg_Win.Play();
         else
-            bg_Die.PlayDelayed(1f);
+            bg_Die.Play();
 
         EndGameScreen.SetActive(true);
         PlayerName.gameObject.SetActive(false);
