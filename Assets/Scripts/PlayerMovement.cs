@@ -56,6 +56,8 @@ public class PlayerMovement : MonoBehaviour
     AudioSource bg_Win;
     [SerializeField]
     AudioSource bg_Die;
+    [SerializeField]
+    AudioSource finished;
 
     public Transform deathZone;
 
@@ -80,6 +82,8 @@ public class PlayerMovement : MonoBehaviour
     private Transform ResultTransfrom;
 
     bool isRunOnMobile = false;
+
+    private bool m_FootStepMusic = false;
 
     void Start()
     {
@@ -132,6 +136,7 @@ public class PlayerMovement : MonoBehaviour
                     SocketClient.instance.OnMoving();
                     PlayerMovementInput = new Vector3(0, 0f, 1);
                     isWalking = true;
+                    UpdateFootStepMusic();
                     PlayAnimationSmoothly("Walk", 0.25f);
                 }
                 else if (touch.phase == TouchPhase.Moved)
@@ -144,6 +149,7 @@ public class PlayerMovement : MonoBehaviour
 
                     PlayerMovementInput = Vector3.zero;
                     isWalking = false;
+                    UpdateFootStepMusic();
                     SocketClient.instance?.OnStopMove();
                     Debug.Log(" ======================== GetTouch mobile  uppppppppp ===========  ");
                 }
@@ -157,6 +163,7 @@ public class PlayerMovement : MonoBehaviour
                 SocketClient.instance.OnMoving();
                 PlayerMovementInput = new Vector3(0, 0f, 1);
                 isWalking = true;
+                UpdateFootStepMusic();
                 PlayAnimationSmoothly("Walk", 0.25f);
             }
             else
@@ -172,6 +179,7 @@ public class PlayerMovement : MonoBehaviour
 
                 PlayerMovementInput = Vector3.zero;
                 isWalking = false;
+                UpdateFootStepMusic();
                 SocketClient.instance?.OnStopMove();
                 Debug.Log(" ======================== GetMouseButtonUp dasdadadadad ===========  ");
             }
@@ -237,10 +245,12 @@ public class PlayerMovement : MonoBehaviour
             SocketClient.instance.OnPlayerDie();
 
             isDying = true;
+            UpdateFootStepMusic(forceStop: true);
             //anim.SetBool("isDying", true);            
             PlayAnimationSmoothly("Dying", 0.25f);
             //feetSteps.Stop();
             shoot.Play(0);
+
             die.PlayDelayed(.2f);
         }
     }
@@ -255,6 +265,8 @@ public class PlayerMovement : MonoBehaviour
             SocketClient.instance.OnPlayerWin();
 
             //anim.SetBool("isWalking", false)
+            finished.Play();
+            UpdateFootStepMusic(forceStop: true);
             PlayAnimationSmoothly("Victory", 0.25f);                        
             //feetSteps.Stop();
         }
@@ -311,9 +323,9 @@ public class PlayerMovement : MonoBehaviour
     public void EnableEndGameScreen()
     {
         if (isPlayerWon)
-            bg_Win.PlayDelayed(1f);
+            bg_Win.Play();
         else
-            bg_Die.PlayDelayed(1f);
+            bg_Die.Play();
 
         EndGameScreen.SetActive(true);
         PlayerName.gameObject.SetActive(false);
@@ -343,5 +355,29 @@ public class PlayerMovement : MonoBehaviour
         GameObject resultPlayer = Instantiate(user.gameObject, EndGameScreen.transform);
         resultPlayer.transform.localPosition = pos;
         ResultTransfrom.gameObject.SetActive(false);
+    }
+
+    public void UpdateFootStepMusic(bool forceStop = false)
+    {
+        if(forceStop)
+        {
+            feetSteps.Stop();
+            m_FootStepMusic = false;
+            return;
+        }
+
+        if(isWalking)
+        {
+            if(!m_FootStepMusic)
+            {
+                feetSteps.Play();
+                m_FootStepMusic = true;
+            }
+        }
+        else
+        {
+            feetSteps.Stop();
+            m_FootStepMusic = false;
+        }
     }
 }
