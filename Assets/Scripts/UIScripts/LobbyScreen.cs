@@ -12,6 +12,7 @@ namespace UIElements
         [SerializeField] TextMeshProUGUI m_roomID;
         [SerializeField] RawImage m_qrImage;
         [SerializeField] Dictionary<string, PlayerAvatar> m_playerAvatarsList;
+        public List<PlayerAvatar> avatarsLists;
 
         public string RoomID => m_roomID.text;
         public RawImage QRImage => m_qrImage;
@@ -19,12 +20,16 @@ namespace UIElements
         // Start is called before the first frame update
         void Start()
         {
-            m_qrImage.texture = GetQRCodeTexture(m_roomID.text, 512, 512);
+            m_roomID.text = MainMenu.instance.roomId;
+            m_qrImage.texture = GetQRCodeTexture(m_roomID.text, 256, 256);
         }
 
-        public void SetAvatarForPlayer(Texture2D avatarImage, string playerID)
+        public void SetAvatarForPlayer(Texture2D avatarImage, int index)
         {
-            m_playerAvatarsList[playerID].SetAvatarImage(avatarImage);
+            //m_playerAvatarsList[playerID].SetAvatarImage(avatarImage);
+            //avatarsLists[index].SetAvatarImage(ImageLoader.instance.textureImageUrl);
+
+            avatarsLists[index].gameObject.GetComponent<RawImage>().texture = avatarImage;
         }
         public void SetRoomID(string roomID)
         {
@@ -36,7 +41,7 @@ namespace UIElements
         }
         public void OnStartGame()
         {
-        
+            MainMenu.instance.GotoGame();
         }    
 
         private Texture2D GetQRCodeTexture(string text, int width, int height)

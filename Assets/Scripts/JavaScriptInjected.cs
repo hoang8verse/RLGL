@@ -5,16 +5,19 @@ using System.Collections;
 
 public class JavaScriptInjected : MonoBehaviour
 {
-
+    public static JavaScriptInjected instance;
     [DllImport("__Internal")]
     private static extern void Hello();
 
     [DllImport("__Internal")]
     private static extern void HelloString(string str);
-
     [System.Obsolete]
     void Start()
     {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
         //Hello();
 
         //HelloString("This is a string.");
@@ -78,7 +81,7 @@ public class JavaScriptInjected : MonoBehaviour
                     }
                     if (key == "userAppId")
                     {
-                        //MainMenu.instance.roomId = value;
+                        MainMenu.instance.userAppId = value;
                     }
                     if (key == "userName")
                     {
@@ -86,7 +89,8 @@ public class JavaScriptInjected : MonoBehaviour
                     }
                     if (key == "userAvatar")
                     {
-                        //MainMenu.instance.roomId = value;
+                        //https://h5.zdn.vn/static/images/avatar.png
+                        MainMenu.instance.userAvatar = value;
                     }
                 }
             }

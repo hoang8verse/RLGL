@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
+using UIElements;
 
 public class MainMenu : MonoBehaviour
 {
@@ -30,6 +31,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private TMPro.TextMeshProUGUI RoomId;
 
+    [SerializeField] TMPro.TextMeshProUGUI m_notificationText;
+
     [SerializeField]
     AudioSource bg_Music;
     [SerializeField]
@@ -41,6 +44,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private TMPro.TMP_InputField inputPlayerName;
 
+    public string userAppId = "";
+    public string userAvatar = "https://h5.zdn.vn/static/images/avatar.png";
     public string playerName = "anonymous";
     public string roomId = "";
     public string isHost = "0";
@@ -85,11 +90,26 @@ public class MainMenu : MonoBehaviour
     }
     IEnumerator WaitingReceiver()
     {
+        //roomId = "roomid";// test already have room id
         yield return new WaitForSeconds(0.5f);
-        homeScreen.SetActive(true);
-        createRoomScreen.SetActive(false);
-        joinRoomScreen.SetActive(false);
-        failJoinRoomScreen.SetActive(false);
+        if (roomId != "")
+        {
+            homeScreen.SetActive(false);
+            createRoomScreen.SetActive(false);
+            joinRoomScreen.SetActive(true);
+            failJoinRoomScreen.SetActive(false);
+
+            inputRoomId.text = roomId;
+            JoinRoom();
+        }
+        else
+        {
+            homeScreen.SetActive(true);
+            createRoomScreen.SetActive(false);
+            joinRoomScreen.SetActive(false);
+            failJoinRoomScreen.SetActive(false);
+        }
+
         bg_Music.Play(0);
     }
     private void Update()
@@ -113,25 +133,25 @@ public class MainMenu : MonoBehaviour
             myKeyboard = null;
 
         }
-        if (TouchScreenKeyboard.visible && Input.touchCount == 0)
-        {
-            currentInput.text = myKeyboard.text;
-            Debug.Log("Key board value was pressed : " + myKeyboard.text);
-        }
+        //if (TouchScreenKeyboard.visible && Input.touchCount == 0)
+        //{
+        //    currentInput.text = myKeyboard.text;
+        //    Debug.Log("Key board value was pressed : " + myKeyboard.text);
+        //}
             
         
-        if (Input.anyKeyDown)
-        {
-            // Check if any key was pressed down
-            foreach (KeyCode code in Enum.GetValues(typeof(KeyCode)))
-            {
-                if (Input.GetKeyDown(code))
-                {
-                    // The code variable will contain the value of the key that was pressed down
-                    Debug.Log("Key " + code + " was pressed");
-                }
-            }
-        }
+        //if (Input.anyKeyDown)
+        //{
+        //    // Check if any key was pressed down
+        //    foreach (KeyCode code in Enum.GetValues(typeof(KeyCode)))
+        //    {
+        //        if (Input.GetKeyDown(code))
+        //        {
+        //            // The code variable will contain the value of the key that was pressed down
+        //            Debug.Log("Key " + code + " was pressed");
+        //        }
+        //    }
+        //}
     }
     public void PlayerNameChange (TMPro.TextMeshProUGUI inputPlayerName)
     {
@@ -165,6 +185,10 @@ public class MainMenu : MonoBehaviour
     }
     public void JoinRoom()
     {
+        if (joinRoomScreen.activeSelf)
+        {
+            roomId = inputRoomId.text;
+        }
         RoomId.text = roomId;
 
         if (playerName.Length <= 1)
@@ -204,17 +228,23 @@ public class MainMenu : MonoBehaviour
     }
     public void UserJoinRoom()
     {
+        roomId = inputRoomId.text;
         joinRoomScreen.SetActive(true);
         homeScreen.SetActive(false);
         isHost = "0";
     }
     public void ShowFailScreen(string message)
     {
-        failMessage.text = message;
-        homeScreen.SetActive(false);
-        joinRoomScreen.SetActive(false);
-        createRoomScreen.SetActive(false);
-        failJoinRoomScreen.SetActive(true);
+        //failMessage.text = message;
+        //homeScreen.SetActive(false);
+        //joinRoomScreen.SetActive(false);
+        //createRoomScreen.SetActive(false);
+        //failJoinRoomScreen.SetActive(true);
+
+        //m_notificationText.text = message;
+        m_notificationText.text = "Mã phòng " + RoomId.text + " không tồn tại";
+        m_notificationText.gameObject.SetActive(true);
+
     }
 
     public void FailToJoinRoom()
@@ -246,11 +276,26 @@ public class MainMenu : MonoBehaviour
         listPlayers[_clientId] = Instantiate(user.gameObject, transformPlayers);
         listPlayers[_clientId].transform.localPosition = pos;
         playerPrefab.gameObject.SetActive(false);
+
+
+    }
+
+    public void AddPlayerJoinRoomByAvatar(Texture2D avatar, int index)
+    {
+        if(avatar != null && index < createRoomScreen.GetComponent<LobbyScreen>().avatarsLists.Count - 1)
+        {
+            createRoomScreen.GetComponent<LobbyScreen>().SetAvatarForPlayer(avatar, index);
+        }
     }
 
     public void CopyToClipboard()
     {
         GUIUtility.systemCopyBuffer = roomId;
+    }
+
+    public void ShareLinkToInvite()
+    {
+        JavaScriptInjected.instance.SendRequestShareRoom();
     }
 
 }

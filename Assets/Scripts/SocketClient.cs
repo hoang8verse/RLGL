@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 
 using System;
 using System.IO;
@@ -32,6 +32,9 @@ public class SocketClient : MonoBehaviour
     private string url = "";
     static string baseUrl = "ws://192.168.1.39";
     static string HOST = "8081";
+
+    //static string baseUrl = "ws://34.87.31.157";
+    //static string HOST = "8081";
 
     public string ROOM = "";
     public string clientId = "";
@@ -288,13 +291,17 @@ public class SocketClient : MonoBehaviour
                 {
                     for (int i = 0; i < players.Count; i++)
                     {
-                        MainMenu.instance.AddPlayerJoinRoom(players[i]["id"].ToString(),players[i]["playerName"].ToString(), i);
+                        //MainMenu.instance.AddPlayerJoinRoom(players[i]["id"].ToString(),players[i]["playerName"].ToString(), i);
+                        StartCoroutine(LoadAvatarImage(players[i]["avatar"].ToString(), i));
+
+
                     }
                 } 
                 // for old player
                 else
                 {
-                    MainMenu.instance.AddPlayerJoinRoom(data["clientId"].ToString(), data["playerName"].ToString(), players.Count - 1);
+                    //MainMenu.instance.AddPlayerJoinRoom(data["clientId"].ToString(), data["playerName"].ToString(), players.Count - 1);
+                    StartCoroutine(LoadAvatarImage(data["avatar"].ToString(), players.Count - 1));
                 }
 
                 break;
@@ -465,6 +472,8 @@ public class SocketClient : MonoBehaviour
         jsData.Add("room", ROOM);
         jsData.Add("isHost", MainMenu.instance.isHost);
         jsData.Add("playerName", playerName);
+        jsData.Add("userAppId", MainMenu.instance.userAppId);
+        jsData.Add("avatar", MainMenu.instance.userAvatar);
         Send(Newtonsoft.Json.JsonConvert.SerializeObject(jsData));
     }
     public void OnJoinRoom()
@@ -573,6 +582,25 @@ public class SocketClient : MonoBehaviour
     public async void OnCloseConnectSocket()
     {
         await webSocket.Close();
+    }
+
+    IEnumerator LoadAvatarImage(string imageUrl, int index)
+    {
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageUrl);
+        yield return request.SendWebRequest();
+
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.Log(request.error);
+            Texture2D textureImageUrl = null;
+            MainMenu.instance.AddPlayerJoinRoomByAvatar(textureImageUrl, index);
+        }
+        else
+        {
+            Texture2D textureImageUrl = ((DownloadHandlerTexture)request.downloadHandler).texture;
+            // use the texture here
+            MainMenu.instance.AddPlayerJoinRoomByAvatar(textureImageUrl, index);
+        }
     }
 
 }

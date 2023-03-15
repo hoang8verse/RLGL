@@ -41,11 +41,11 @@ namespace UIElements
         }
         public void OnJoinRoom()
         {
-            
+            MainMenu.instance.JoinRoom();
         }
         public void OnExitScreen()
         {
-            
+            MainMenu.instance.FailToJoinRoom();
         }
     }
 }

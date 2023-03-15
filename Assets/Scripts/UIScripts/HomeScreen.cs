@@ -21,11 +21,11 @@ namespace UIElements
 
         public void CreateRoom()
         {
-        
+            MainMenu.instance.HostCreateNewRoom();
         }
         public void JoinRoom()
         {
-            
+            MainMenu.instance.UserJoinRoom();
         }
     }
 }
