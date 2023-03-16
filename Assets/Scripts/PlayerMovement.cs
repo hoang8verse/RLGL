@@ -295,7 +295,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void RequestStartGame()
     {
-        OnClick();
+        OnClickVFX();
         SocketClient.instance.OnStartGame();
         HostStartGame.GetComponent<Button>().interactable = false;
     }
@@ -320,6 +320,7 @@ public class PlayerMovement : MonoBehaviour
             bg_Win.Stop();
         else
             bg_Die.Stop();
+        OnClickVFX();
         isReadyStartGame = false;
         SceneManager.LoadScene("MainMenu");
     }
@@ -388,7 +389,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void OnClick()
+    public void OnClickVFX()
     {
         clicked.Play();
     }
