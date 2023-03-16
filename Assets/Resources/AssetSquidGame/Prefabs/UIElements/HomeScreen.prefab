@@ -576,7 +576,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  m_text: "Ng\u01B0\u1EDDi ch\u01A1i c\xF3 <b><color=#FF0000>60 gi\xE2y</color> </b>\u0111\u1EC3
+    v\u1EC1 \u0111\xEDch\r\nCh\u1EA1m v\xE0o m\xE0n h\xECnh \u0111\u1EC3 di chuy\u1EC3n
+    nh\xE2n v\u1EADt\r\n<b><color=#FF0000>L\u01B0u \xFD:</color> </b> kh\xF4ng di
+    chuy\u1EC3n nh\xE2n v\u1EADt khi b\xFAp b\xEA quay l\u1EA1i\r\nNg\u01B0\u1EDDi
+    chi\u1EBFn th\u1EAFng s\u1EBD nh\u1EADn \u0111\u01B0\u1EE3c ph\u1EA7n th\u01B0\u1EDFng
+    t\u1EEB ban t\u1ED5 ch\u1EE9c"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
