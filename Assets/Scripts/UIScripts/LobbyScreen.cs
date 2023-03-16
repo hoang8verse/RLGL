@@ -44,7 +44,7 @@ namespace UIElements
         }
         public void OnStartGame()
         {
-            MainMenu.instance.GotoGame();
+            MainMenu.instance.JoinTheGame();
         }    
 
         private Texture2D GetQRCodeTexture(string text, int width, int height)
