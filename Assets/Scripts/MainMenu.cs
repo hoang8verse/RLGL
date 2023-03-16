@@ -40,6 +40,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private AudioSource bg_Die;
     [SerializeField]
+    private AudioSource vfx_click;
+    [SerializeField]
     private TMPro.TMP_InputField inputRoomId;
     [SerializeField]
     private TMPro.TMP_InputField inputPlayerName;
@@ -187,6 +189,8 @@ public class MainMenu : MonoBehaviour
     }
     public void JoinRoom()
     {
+        OnClickVfx();
+
         if (joinRoomScreen.activeSelf)
         {
             roomId = inputRoomId.text;
@@ -218,11 +222,15 @@ public class MainMenu : MonoBehaviour
     }
     public void GotoGame()
     {
+        OnClickVfx();
+
         bg_Music.Stop();
         SceneManager.LoadScene("Game");
     }
     public void HostCreateNewRoom()
     {
+        OnClickVfx();
+
         roomId = Generate();
         //RoomId.text = "Room ID : " +  roomId;
         isHost = "1";
@@ -230,6 +238,8 @@ public class MainMenu : MonoBehaviour
     }
     public void UserJoinRoom()
     {
+        OnClickVfx();
+
         roomId = inputRoomId.text;
         joinRoomScreen.SetActive(true);
         homeScreen.SetActive(false);
@@ -251,6 +261,8 @@ public class MainMenu : MonoBehaviour
 
     public void FailToJoinRoom()
     {
+        OnClickVfx();
+
         homeScreen.SetActive(true);
         joinRoomScreen.SetActive(false);
         createRoomScreen.SetActive(false);
@@ -296,7 +308,13 @@ public class MainMenu : MonoBehaviour
 
     public void ShareLinkToInvite()
     {
+        OnClickVfx();
         JavaScriptInjected.instance.SendRequestShareRoom();
+    }
+
+    public void OnClickVfx()
+    {
+        vfx_click.Play();
     }
 
 }

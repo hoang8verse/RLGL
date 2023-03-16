@@ -58,6 +58,8 @@ public class PlayerMovement : MonoBehaviour
     AudioSource bg_Die;
     [SerializeField]
     AudioSource finished;
+    [SerializeField]
+    AudioSource clicked;
 
     public Transform deathZone;
 
@@ -293,6 +295,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void RequestStartGame()
     {
+        OnClick();
         SocketClient.instance.OnStartGame();
         HostStartGame.GetComponent<Button>().interactable = false;
     }
@@ -383,5 +386,10 @@ public class PlayerMovement : MonoBehaviour
             feetSteps.Stop();
             m_FootStepMusic = false;
         }
+    }
+
+    public void OnClick()
+    {
+        clicked.Play();
     }
 }
