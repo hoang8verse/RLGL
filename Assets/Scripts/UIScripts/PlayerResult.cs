@@ -17,8 +17,8 @@ public class PlayerResult : MonoBehaviour
     [SerializeField] GameObject m_victoryMark;
 
     public bool IsWin => m_isWin;
-    private Color VICTORY_COLOR = Color.HSVToRGB(152, 192, 42);
-    private Color DEFEAT_COLOR = Color.HSVToRGB(226, 226, 226);
+    private Color VICTORY_COLOR = new Color(152, 192, 42);
+    private Color DEFEAT_COLOR = new Color(226, 226, 226);
 
     // Start is called before the first frame update
     void Start()

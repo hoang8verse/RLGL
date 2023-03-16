@@ -292,7 +292,7 @@ public class SocketClient : MonoBehaviour
                     for (int i = 0; i < players.Count; i++)
                     {
                         //MainMenu.instance.AddPlayerJoinRoom(players[i]["id"].ToString(),players[i]["playerName"].ToString(), i);
-                        StartCoroutine(LoadAvatarImage(players[i]["avatar"].ToString(), i));
+                        StartCoroutine(LoadAvatarImage(players[i]["avatar"].ToString(), players[i]["id"].ToString(), i));
 
 
                     }
@@ -301,7 +301,7 @@ public class SocketClient : MonoBehaviour
                 else
                 {
                     //MainMenu.instance.AddPlayerJoinRoom(data["clientId"].ToString(), data["playerName"].ToString(), players.Count - 1);
-                    StartCoroutine(LoadAvatarImage(data["avatar"].ToString(), players.Count - 1));
+                    StartCoroutine(LoadAvatarImage(data["avatar"].ToString(), data["clientId"].ToString(), players.Count - 1));
                 }
 
                 break;
@@ -402,15 +402,17 @@ public class SocketClient : MonoBehaviour
                 players = JArray.Parse(data["players"].ToString());
                 for (int i = 0; i < players.Count; i++)
                 {
-                    player.GetComponent<PlayerMovement>().AddPlayerResult(players[i]["playerName"].ToString(), players[i]["playerStatus"].ToString(), i);
+                    Texture2D avatar = MainMenu.instance.listPlayerAvatars[players[i]["id"].ToString()];
+                    player.GetComponent<PlayerMovement>().AddPlayerResult(avatar, players[i]["playerName"].ToString(), players[i]["playerStatus"].ToString(), i);
+                    //player.GetComponent<PlayerMovement>().AddPlayerResult(players[i]["playerName"].ToString(), players[i]["playerStatus"].ToString(), i);
                 }
                 player.GetComponent<PlayerMovement>().EnableEndGameScreen();
                 break;
             case "playerLeaveRoom":
                 string playerLeaveId = data["clientId"].ToString();
 
-                MainMenu.instance.listPlayers[playerLeaveId].SetActive(false);
-                Destroy(MainMenu.instance.listPlayers[playerLeaveId]);
+                //MainMenu.instance.listPlayers[playerLeaveId].SetActive(false);
+                //Destroy(MainMenu.instance.listPlayers[playerLeaveId]);
 
                 for (int i = 0; i < players.Count; i++)
                 {
@@ -584,7 +586,7 @@ public class SocketClient : MonoBehaviour
         await webSocket.Close();
     }
 
-    IEnumerator LoadAvatarImage(string imageUrl, int index)
+    IEnumerator LoadAvatarImage(string imageUrl, string playerID, int index)
     {
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageUrl);
         yield return request.SendWebRequest();
@@ -593,13 +595,13 @@ public class SocketClient : MonoBehaviour
         {
             Debug.Log(request.error);
             Texture2D textureImageUrl = null;
-            MainMenu.instance.AddPlayerJoinRoomByAvatar(textureImageUrl, index);
+            MainMenu.instance.AddPlayerJoinRoomByAvatar(textureImageUrl, playerID, index);
         }
         else
         {
             Texture2D textureImageUrl = ((DownloadHandlerTexture)request.downloadHandler).texture;
             // use the texture here
-            MainMenu.instance.AddPlayerJoinRoomByAvatar(textureImageUrl, index);
+            MainMenu.instance.AddPlayerJoinRoomByAvatar(textureImageUrl, playerID, index);
         }
     }
 

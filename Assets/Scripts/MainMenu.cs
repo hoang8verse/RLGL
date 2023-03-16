@@ -49,7 +49,8 @@ public class MainMenu : MonoBehaviour
     public string playerName = "anonymous";
     public string roomId = "";
     public string isHost = "0";
-    public Dictionary<string, GameObject> listPlayers;
+    //public Dictionary<string, GameObject> listPlayers;
+    public Dictionary<string, Texture2D> listPlayerAvatars;
 
     //private const string CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private const string CHARS = "abcdefghijklmnopqrstuvwxyz";
@@ -85,7 +86,8 @@ public class MainMenu : MonoBehaviour
             Destroy(gameObject);
 
 
-        listPlayers = new Dictionary<string, GameObject>();
+        //listPlayers = new Dictionary<string, GameObject>();
+        listPlayerAvatars = new Dictionary<string, Texture2D>();
         StartCoroutine(WaitingReceiver());
     }
     IEnumerator WaitingReceiver()
@@ -255,35 +257,34 @@ public class MainMenu : MonoBehaviour
         failJoinRoomScreen.SetActive(false);
     }
 
-    public void AddPlayerJoinRoom(string _clientId, string _playerName, int index)
-    {
-        Debug.Log(" index ================   " + index);
-        Vector3 pos = new Vector3(0, -100 * index + 160, 0);
-        TMPro.TextMeshProUGUI user = playerPrefab;
-        string _text = _playerName + " is join the game." ;
+    //public void AddPlayerJoinRoom(string _clientId, string _playerName, int index)
+    //{
+    //    Debug.Log(" index ================   " + index);
+    //    Vector3 pos = new Vector3(0, -100 * index + 160, 0);
+    //    TMPro.TextMeshProUGUI user = playerPrefab;
+    //    string _text = _playerName + " is join the game." ;
 
-        user.text = _text;
-        if (_clientId != SocketClient.instance.clientId)
-        {
-            user.color = Color.white;
-        }
-        else
-        {
-            user.color = Color.green;
-        }
-        user.gameObject.SetActive(true);
-        Debug.Log(" pos ================   " + pos);
-        listPlayers[_clientId] = Instantiate(user.gameObject, transformPlayers);
-        listPlayers[_clientId].transform.localPosition = pos;
-        playerPrefab.gameObject.SetActive(false);
+    //    user.text = _text;
+    //    if (_clientId != SocketClient.instance.clientId)
+    //    {
+    //        user.color = Color.white;
+    //    }
+    //    else
+    //    {
+    //        user.color = Color.green;
+    //    }
+    //    user.gameObject.SetActive(true);
+    //    Debug.Log(" pos ================   " + pos);
+    //    listPlayers[_clientId] = Instantiate(user.gameObject, transformPlayers);
+    //    listPlayers[_clientId].transform.localPosition = pos;
+    //    playerPrefab.gameObject.SetActive(false);
+    //}
 
-
-    }
-
-    public void AddPlayerJoinRoomByAvatar(Texture2D avatar, int index)
+    public void AddPlayerJoinRoomByAvatar(Texture2D avatar, string playerID, int index)
     {
         if(avatar != null && index < createRoomScreen.GetComponent<LobbyScreen>().avatarsLists.Count - 1)
         {
+            listPlayerAvatars.Add(playerID, avatar);
             createRoomScreen.GetComponent<LobbyScreen>().SetAvatarForPlayer(avatar, index);
         }
     }
