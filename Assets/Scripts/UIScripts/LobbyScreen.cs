@@ -21,7 +21,10 @@ namespace UIElements
         void Start()
         {
             m_roomID.text = MainMenu.instance.roomId;
-            m_qrImage.texture = GetQRCodeTexture(m_roomID.text, 256, 256);
+
+            string qrCoreGen = MainMenu.instance.deepLinkZaloApp + "?roomId="+ MainMenu.instance.roomId;
+
+            m_qrImage.texture = GetQRCodeTexture(qrCoreGen, 256, 256);
         }
 
         public void SetAvatarForPlayer(Texture2D avatarImage, int index)

@@ -44,6 +44,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private TMPro.TMP_InputField inputPlayerName;
 
+    public string deepLinkZaloApp = "https://zalo.me/s/543482719351051682/";
     public string userAppId = "";
     public string userAvatar = "https://h5.zdn.vn/static/images/avatar.png";
     public string playerName = "anonymous";
