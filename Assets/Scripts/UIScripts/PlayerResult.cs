@@ -17,7 +17,7 @@ public class PlayerResult : MonoBehaviour
     [SerializeField] GameObject m_victoryMark;
 
     public bool IsWin => m_isWin;
-    private Color VICTORY_COLOR = new Color(152f / 255f, 192f / 255f, 42f / 255f);
+    private Color VICTORY_COLOR = new Color32(0x16, 0x55, 0x1E, 0xFF);
     private Color DEFEAT_COLOR = new Color(226f / 255f, 226f / 255f, 226f / 255f);
 
     // Start is called before the first frame update
@@ -27,14 +27,17 @@ public class PlayerResult : MonoBehaviour
         {
             m_victoryMark.SetActive(true);
             m_resultPanel.color = VICTORY_COLOR;
-            m_avatarHolder.color = VICTORY_COLOR;            
+            m_avatarHolder.color = VICTORY_COLOR;
+            m_playerName.color = Color.white;
         }
         else
         {
             m_victoryMark.SetActive(false);
             m_resultPanel.color = DEFEAT_COLOR;
             m_avatarHolder.color = DEFEAT_COLOR;
+            m_playerName.color = new Color32(0x16, 0x55, 0x1E, 0xFF);
         }
+
     }
 
     // Update is called once per frame
@@ -49,6 +52,7 @@ public class PlayerResult : MonoBehaviour
     }
     public void SetPlayerName(string playerName)
     {
+
         m_playerName.text = playerName;
     }
     public void SetPlayerAvatar(Texture2D avatar)
