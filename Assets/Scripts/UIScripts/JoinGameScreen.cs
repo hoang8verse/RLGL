@@ -23,7 +23,25 @@ namespace UIElements
         // Update is called once per frame
         void Update()
         {
+            if (Application.isMobilePlatform)
+            {
+                if (m_touchScreenKeyboard != null)
+                {
 
+                    if (m_touchScreenKeyboard.status == TouchScreenKeyboard.Status.Done ||
+                        m_touchScreenKeyboard.status == TouchScreenKeyboard.Status.Canceled)
+                    {
+                        Debug.Log(" m_touchScreenKeyboard.text nullllllllllllllllll  ");
+                        m_touchScreenKeyboard = null;
+                    }
+                    else if (m_touchScreenKeyboard.status == TouchScreenKeyboard.Status.Visible)
+                    {
+
+                        m_inputField.text = m_touchScreenKeyboard.text;
+                        Debug.Log("m_inputField ================  " + m_inputField.text);
+                    }
+                }
+            }
         }
 
         public void OnShowNotificationMessage(string notificationText = "Mã phòng không tồn tại*")
@@ -31,13 +49,23 @@ namespace UIElements
             m_notificationText.text = notificationText;
             m_notificationText.gameObject.SetActive(true);
         }
-        public void OnEnteredRoomID()
+        //public void OnEnteredRoomID(TextMeshProUGUI inputRoomId)
+        //{
+        //    if (Application.isMobilePlatform)
+        //        m_inputField.text = inputRoomId.text;
+        //}
+        public void OnInputFieldSelected(TextMeshProUGUI _currentInput)
         {
-            m_roomIDEntered = m_inputField.text;
-        }
-        public void OnInputFieldSelected()
-        {
-            m_touchScreenKeyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
+
+            if (Application.isMobilePlatform)
+            {
+                if (m_touchScreenKeyboard == null)
+                {
+
+                    m_touchScreenKeyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
+                }
+            }
+
         }
         public void OnJoinRoom()
         {
