@@ -78,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField]
     private GameObject EndGameScreen;
-    [SerializeField]
+    
     private Transform ResultTransfrom;
 
     bool isRunOnMobile = false;
@@ -355,6 +355,10 @@ public class PlayerMovement : MonoBehaviour
         GameObject resultPlayer = Instantiate(user.gameObject, EndGameScreen.transform);
         resultPlayer.transform.localPosition = pos;
         ResultTransfrom.gameObject.SetActive(false);
+    }
+    public void AddPlayerResult(Texture2D playerAvatar, string playerName, string playerStatus, int index)
+    {
+        EndGameScreen.GetComponent<UIElements.EndGameScreen>().AddPlayerResult(playerAvatar, playerName, playerStatus, index);
     }
 
     public void UpdateFootStepMusic(bool forceStop = false)
