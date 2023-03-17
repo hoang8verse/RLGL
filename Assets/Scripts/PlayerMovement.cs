@@ -193,7 +193,7 @@ public class PlayerMovement : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         
-        Debug.Log("  isWalking :::   " + isWalking);
+        //Debug.Log("  isWalking :::   " + isWalking);
 
 
         PlayerMouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));

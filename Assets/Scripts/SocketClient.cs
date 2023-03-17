@@ -321,7 +321,14 @@ public class SocketClient : MonoBehaviour
                     string _clientId = _player["id"].ToString();
                     playerJoinName = _player["playerName"].ToString();
                     Debug.Log(" clientId =================  " + clientId + "   ---   _clientId ==  " + _clientId);
-
+                    Vector3 pos = Vector3.zero;
+                    JArray arrPos = JArray.Parse(_player["position"].ToString());
+                    if (arrPos.Count > 0)
+                    {
+                        pos = new Vector3(arrPos[0].Value<float>(),
+                                arrPos[1].Value<float>(),
+                                arrPos[2].Value<float>());
+                    }
                     if (_clientId == clientId && player == null)
                     {
                         Debug.Log("  ===========  player =================  " );
@@ -350,14 +357,7 @@ public class SocketClient : MonoBehaviour
                         if (!otherPlayers.ContainsKey(_clientId))
                         {
                             Debug.Log("  ===========  player =================  " + _player["position"]);
-                            Vector3 pos = Vector3.zero;
-                            JArray arrPos = JArray.Parse(_player["position"].ToString());
-                            if (arrPos.Count > 0)
-                            {
-                                pos = new Vector3(arrPos[0].Value<float>(),
-                                        arrPos[1].Value<float>(),
-                                        arrPos[2].Value<float>());
-                            }
+                            
                             // other player
                             if (_player["gender"].ToString() == "0")
                             {
@@ -370,6 +370,11 @@ public class SocketClient : MonoBehaviour
 
                             otherPlayers[_clientId].name = "otherplayer-" + playerJoinName;
                             otherPlayers[_clientId].SetActive(true);
+                        } 
+                        else
+                        {
+                            Debug.Log("  ===========  player is same client =================  " + _player["position"]);
+                           otherPlayers[_clientId].transform.position = pos;
                         }
 
                     }
@@ -424,7 +429,7 @@ public class SocketClient : MonoBehaviour
 
                 for (int i = 0; i < players.Count; i++)
                 {
-                    Debug.Log(" players player leave ==   " + players[i].ToString());
+                    //Debug.Log(" players player leave ==   " + players[i].ToString());
                     if (playerLeaveId == players[i]["id"].ToString())
                     {
                         players.RemoveAt(i);
@@ -433,7 +438,7 @@ public class SocketClient : MonoBehaviour
                     }
                 }
 
-                Debug.Log(" data player leave ==   " + data.ToString());
+                
                 // check new host 
                 string checkNewHost = data["newHost"].ToString();
                 
@@ -443,10 +448,12 @@ public class SocketClient : MonoBehaviour
 
                     if (player != null)
                     {
+                        Debug.Log(" client is new host -----------    " );
                         player.GetComponent<PlayerMovement>().isHost = true;
                     } 
                     else
                     {
+                        Debug.Log(" client is new lobby host ---=====  ");
                         MainMenu.instance.isHost = "1";
                         MainMenu.instance.CheckTheHost();
                     }

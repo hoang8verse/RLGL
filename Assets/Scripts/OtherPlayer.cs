@@ -73,7 +73,7 @@ public class OtherPlayer : MonoBehaviour
     {
         if (animationPlaying == animationName)
         {
-            Debug.LogWarning(animationName + " is playing");
+            //Debug.LogWarning(animationName + " is playing");
             return;
         }
         animationPlaying = animationName;
