@@ -15,7 +15,7 @@ using Newtonsoft.Json.Linq;
 // Use plugin namespace
 using NativeWebSocket;
 using Random = UnityEngine.Random;
-using System.Globalization;
+//using System.Globalization;
 
 public class SocketClient : MonoBehaviour
 {
@@ -62,6 +62,8 @@ public class SocketClient : MonoBehaviour
 
     private Dictionary<string,GameObject> otherPlayers;
 
+    Vector3 clientPosStart;
+
     void Awake()
     {
         if (instance == null)
@@ -70,7 +72,7 @@ public class SocketClient : MonoBehaviour
             Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
-        Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+        //Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
     }
     void Start()
     {        
@@ -320,9 +322,6 @@ public class SocketClient : MonoBehaviour
                     playerJoinName = _player["playerName"].ToString();
                     Debug.Log(" clientId =================  " + clientId + "   ---   _clientId ==  " + _clientId);
 
-                    Vector3 pos = new Vector3(float.Parse(_player["position"][0].ToString()), 
-                        float.Parse(_player["position"][1].ToString()), 
-                        float.Parse(_player["position"][2].ToString()));
                     if (_clientId == clientId && player == null)
                     {
                         Debug.Log("  ===========  player =================  " );
@@ -330,11 +329,11 @@ public class SocketClient : MonoBehaviour
                         
                         if(_player["gender"].ToString() == "0")
                         {
-                            player = Instantiate(playerMenPrefab, pos, GameManager.instance.SpawnArea.rotation);
+                            player = Instantiate(playerMenPrefab, clientPosStart, GameManager.instance.SpawnArea.rotation);
                         }
                         else
                         {
-                            player = Instantiate(playerWomenPrefab, pos, GameManager.instance.SpawnArea.rotation);
+                            player = Instantiate(playerWomenPrefab, clientPosStart, GameManager.instance.SpawnArea.rotation);
                         }
                         player.name = "Player-" + playerJoinName;
                         player.GetComponent<PlayerMovement>().deathZone = GameManager.instance.DeathZone;
@@ -350,6 +349,15 @@ public class SocketClient : MonoBehaviour
                         Debug.Log("  ===========  other player =================  ");
                         if (!otherPlayers.ContainsKey(_clientId))
                         {
+                            Debug.Log("  ===========  player =================  " + _player["position"]);
+                            Vector3 pos = Vector3.zero;
+                            JArray arrPos = JArray.Parse(_player["position"].ToString());
+                            if (arrPos.Count > 0)
+                            {
+                                pos = new Vector3(arrPos[0].Value<float>(),
+                                        arrPos[1].Value<float>(),
+                                        arrPos[2].Value<float>());
+                            }
                             // other player
                             if (_player["gender"].ToString() == "0")
                             {
@@ -487,14 +495,14 @@ public class SocketClient : MonoBehaviour
             playerName = "anonymous";
         }
 
-        Vector3 ranPos = RandomPosition();
+        clientPosStart = RandomPosition();
 
         JObject jsData = new JObject();
         jsData.Add("meta", "join");
         jsData.Add("room", ROOM);
         jsData.Add("isHost", MainMenu.instance.isHost);
         jsData.Add("playerName", playerName);
-        jsData.Add("pos", ranPos.ToString());
+        jsData.Add("pos", clientPosStart.ToString());
         Send(Newtonsoft.Json.JsonConvert.SerializeObject(jsData));
     }
     public void OnGotoGame()
