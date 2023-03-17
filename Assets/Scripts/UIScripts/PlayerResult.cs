@@ -15,6 +15,7 @@ public class PlayerResult : MonoBehaviour
     [SerializeField] bool m_isWin;
     [SerializeField] Image m_resultPanel;
     [SerializeField] GameObject m_victoryMark;
+    [SerializeField] GameObject m_loseMark;
 
     public bool IsWin => m_isWin;
     private Color VICTORY_COLOR = new Color32(0x16, 0x55, 0x1E, 0xFF);
@@ -32,7 +33,7 @@ public class PlayerResult : MonoBehaviour
         }
         else
         {
-            m_victoryMark.SetActive(false);
+            m_loseMark.SetActive(true);
             m_resultPanel.color = DEFEAT_COLOR;
             m_avatarHolder.color = DEFEAT_COLOR;
             m_playerName.color = new Color32(0x16, 0x55, 0x1E, 0xFF);
