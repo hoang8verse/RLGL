@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using TMPro;
 using UnityEngine;
 
 public class OtherPlayer : MonoBehaviour
@@ -20,6 +21,9 @@ public class OtherPlayer : MonoBehaviour
 
     [SerializeField]
     AudioSource die;
+
+    [SerializeField]
+    TextMeshProUGUI playerNameText;
 
     private bool isDying;
     private bool isWalking;
@@ -41,7 +45,14 @@ public class OtherPlayer : MonoBehaviour
             Walk();
         }
     }
-
+    public void SetPlayerNameText(string name)
+    {
+        playerNameText.text = name;
+    }
+    public void SetPlayerNameTextStatus(bool status)
+    {
+        playerNameText.gameObject.SetActive(false);
+    }
     public void StartWalking()
     {
         isWalking = true;
