@@ -1056,6 +1056,12 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1506725500 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1506725500, guid: 02df7f90271dd7d4797790df5786675b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3746889537654667192}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1908402618 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3746889537397677570, guid: 02df7f90271dd7d4797790df5786675b,
@@ -1121,7 +1127,7 @@ MonoBehaviour:
   headTurnComplete: 0
   speedHeadTurn: 3
   totalBots: 15
-  Bot: {fileID: 3783728510118546129, guid: 31fe792fdec503a49ba5a543498e6b2a, type: 3}
+  Spectator: {fileID: 1506725500}
   DeathZone: {fileID: 158964774}
   SpawnArea: {fileID: 1908402618}
   TargetEnd: {fileID: 698990589}

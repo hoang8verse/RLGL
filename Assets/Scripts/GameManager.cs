@@ -37,9 +37,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private int totalBots;
-
-    [SerializeField]
-    GameObject Bot;
+    
+    public GameObject Spectator;
 
 
     public Transform DeathZone;
@@ -113,12 +112,6 @@ public class GameManager : MonoBehaviour
     {
         if(isReadyStartGame)
             CountDown();
-    }
-
-    private void SpawnBots()
-    {
-        for (int i = 0; i < totalBots; i++)
-            Instantiate(Bot, RandomPosition(), SpawnArea.rotation);
     }
 
     private Vector3 RandomPosition()
