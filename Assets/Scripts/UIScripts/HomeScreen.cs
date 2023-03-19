@@ -27,5 +27,9 @@ namespace UIElements
         {
             MainMenu.instance.UserJoinRoom();
         }
+        public void SpectatorJoinRoom()
+        {
+            MainMenu.instance.SpectatorJoinRoom();
+        }
     }
 }

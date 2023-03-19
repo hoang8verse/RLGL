@@ -30,7 +30,7 @@ public class SocketClient : MonoBehaviour
 
     [SerializeField]
     private string url = "";
-    static string baseUrl = "ws://192.168.1.39";
+    static string baseUrl = "ws://localhost";
     static string HOST = "8081";
 
     //static string baseUrl = "ws://34.87.31.157";
@@ -43,6 +43,7 @@ public class SocketClient : MonoBehaviour
     public int currentPlayerJoined = 0;
 
     public bool isHost = false;
+    public bool isSpectator = false;
 
     //[SerializeField]
     //Transform SpawnArea;
@@ -63,6 +64,9 @@ public class SocketClient : MonoBehaviour
     private Dictionary<string,GameObject> otherPlayers;
 
     Vector3 clientPosStart;
+
+    [SerializeField]
+    private GameObject spectatorPrefab;
 
     void Awake()
     {
@@ -288,15 +292,15 @@ public class SocketClient : MonoBehaviour
                 currentPlayerJoined = players.Count;
                 Debug.Log(" joinLobbyRoom   " + players);
 
+                isSpectator = data["isSpectator"].ToString() == "1" ? true : false;
                 // for new player
                 if (data["clientId"].ToString() == clientId && player == null)
                 {
                     for (int i = 0; i < players.Count; i++)
                     {
                         //MainMenu.instance.AddPlayerJoinRoom(players[i]["id"].ToString(),players[i]["playerName"].ToString(), i);
-                        StartCoroutine(LoadAvatarImage(players[i]["avatar"].ToString(), players[i]["id"].ToString(), i));
-
-
+                        if(players[i]["isSpectator"].ToString() != "0") { }
+                            StartCoroutine(LoadAvatarImage(players[i]["avatar"].ToString(), players[i]["id"].ToString(), i));
                     }
                 } 
                 // for old player
@@ -319,6 +323,7 @@ public class SocketClient : MonoBehaviour
                 foreach (var _player in players)
                 {
                     string _clientId = _player["id"].ToString();
+             
                     playerJoinName = _player["playerName"].ToString();
                     Debug.Log(" clientId =================  " + clientId + "   ---   _clientId ==  " + _clientId);
                     Vector3 pos = Vector3.zero;
@@ -333,22 +338,29 @@ public class SocketClient : MonoBehaviour
                     {
                         Debug.Log("  ===========  player =================  " );
                         //  player
-                        
-                        if(_player["gender"].ToString() == "0")
+                        if (isSpectator)
                         {
-                            player = Instantiate(playerMenPrefab, clientPosStart, GameManager.instance.SpawnArea.rotation);
+                            player = Instantiate(spectatorPrefab);
                         }
                         else
                         {
-                            player = Instantiate(playerWomenPrefab, clientPosStart, GameManager.instance.SpawnArea.rotation);
+                            if (_player["gender"].ToString() == "0")
+                            {
+                                player = Instantiate(playerMenPrefab, clientPosStart, GameManager.instance.SpawnArea.rotation);
+                            }
+                            else
+                            {
+                                player = Instantiate(playerWomenPrefab, clientPosStart, GameManager.instance.SpawnArea.rotation);
+                            }
+                            player.name = "Player-" + playerJoinName;
+                            player.GetComponent<PlayerMovement>().deathZone = GameManager.instance.DeathZone;
+                            isHost = _player["isHost"].ToString() == "1";
+                            player.GetComponent<PlayerMovement>().isHost = isHost;
+                            player.GetComponent<PlayerMovement>().CheckHostStatus();
+                            player.GetComponent<PlayerMovement>().SetPlayerName(playerJoinName);
+                            player.SetActive(true);
                         }
-                        player.name = "Player-" + playerJoinName;
-                        player.GetComponent<PlayerMovement>().deathZone = GameManager.instance.DeathZone;
-                        isHost = _player["isHost"].ToString() == "1";
-                        player.GetComponent<PlayerMovement>().isHost = isHost;
-                        player.GetComponent<PlayerMovement>().CheckHostStatus();
-                        player.GetComponent<PlayerMovement>().SetPlayerName(playerJoinName);
-                        player.SetActive(true);
+                        
 
                     } 
                     else if (_clientId != clientId )
@@ -376,6 +388,12 @@ public class SocketClient : MonoBehaviour
                             Debug.Log("  ===========  player is same client =================  " + _player["position"]);
                            otherPlayers[_clientId].transform.position = pos;
                         }
+
+                        if (isSpectator)
+                        {
+                            otherPlayers[_clientId].GetComponent<OtherPlayer>().SetPlayerNameTextStatus(true);
+                        }
+                        
 
                     }
 
@@ -413,13 +431,23 @@ public class SocketClient : MonoBehaviour
             case "endGame":
                 Debug.Log("  endGame data ==========  " + data);
                 players = JArray.Parse(data["players"].ToString());
-                for (int i = 0; i < players.Count; i++)
+
+                if (isSpectator)
                 {
-                    Texture2D avatar = MainMenu.instance.listPlayerAvatars[players[i]["id"].ToString()];
-                    player.GetComponent<PlayerMovement>().AddPlayerResult(avatar, players[i]["playerName"].ToString(), players[i]["playerStatus"].ToString(), i);
-                    //player.GetComponent<PlayerMovement>().AddPlayerResult(players[i]["playerName"].ToString(), players[i]["playerStatus"].ToString(), i);
+                    // code spectator screen here
+                   
                 }
-                player.GetComponent<PlayerMovement>().EnableEndGameScreen();
+                else
+                {
+                    for (int i = 0; i < players.Count; i++)
+                    {
+                        Texture2D avatar = MainMenu.instance.listPlayerAvatars[players[i]["id"].ToString()];
+                        player.GetComponent<PlayerMovement>().AddPlayerResult(avatar, players[i]["playerName"].ToString(), players[i]["playerStatus"].ToString(), i);
+                        //player.GetComponent<PlayerMovement>().AddPlayerResult(players[i]["playerName"].ToString(), players[i]["playerStatus"].ToString(), i);
+                    }
+                    player.GetComponent<PlayerMovement>().EnableEndGameScreen();
+                }
+                
                 break;
             case "playerLeaveRoom":
                 string playerLeaveId = data["clientId"].ToString();
@@ -442,7 +470,7 @@ public class SocketClient : MonoBehaviour
                 // check new host 
                 string checkNewHost = data["newHost"].ToString();
                 
-                if (checkNewHost != "" && checkNewHost == clientId)
+                if (checkNewHost != "" && checkNewHost == clientId && !isSpectator)
                 {
                     isHost = true;
 
@@ -473,6 +501,7 @@ public class SocketClient : MonoBehaviour
         jsData.Add("playerLen", 30);
         jsData.Add("room", room);
         jsData.Add("host", MainMenu.instance.isHost);
+        jsData.Add("isSpectator", MainMenu.instance.isSpectator);
         Send(Newtonsoft.Json.JsonConvert.SerializeObject(jsData).ToString());
     }
     public void OnJoinLobbyRoom()

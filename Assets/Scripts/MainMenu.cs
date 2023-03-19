@@ -52,6 +52,7 @@ public class MainMenu : MonoBehaviour
     public string playerName = "anonymous";
     public string roomId = "";
     public string isHost = "0";
+    public string isSpectator = "0"; 
     //public Dictionary<string, GameObject> listPlayers;
     public Dictionary<string, Texture2D> listPlayerAvatars;
 
@@ -245,6 +246,16 @@ public class MainMenu : MonoBehaviour
         joinRoomScreen.SetActive(true);
         homeScreen.SetActive(false);
         isHost = "0";
+    }
+    public void SpectatorJoinRoom()
+    {
+        OnClickVfx();
+
+        roomId = inputRoomId.text;
+        joinRoomScreen.SetActive(true);
+        homeScreen.SetActive(false);
+        isHost = "0";
+        isSpectator = "1";
     }
     public void ShowFailScreen(string message)
     {
