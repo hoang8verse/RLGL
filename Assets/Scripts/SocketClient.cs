@@ -30,8 +30,9 @@ public class SocketClient : MonoBehaviour
 
     [SerializeField]
     private string url = "";
-    static string baseUrl = "ws://localhost";
+    static string baseUrl = "ws://192.168.1.39";
     static string HOST = "8081";
+
 
     //static string baseUrl = "ws://34.87.31.157";
     //static string HOST = "8081";
