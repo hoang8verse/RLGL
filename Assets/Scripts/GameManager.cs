@@ -93,11 +93,22 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
 
-        //if (SocketClient.instance.player.GetComponent<PlayerMovement>().isReadyStartGame)
+        if (SocketClient.instance.isSpectator)
         {
             isReadyStartGame = true;
             dollSing.Play();
+            Debug.Log(" CheckReadyToStart  SocketClient.instance.isSpectator=================  " + SocketClient.instance.isSpectator);
         }
+        else
+        {
+            if (SocketClient.instance.player.GetComponent<PlayerMovement>().isReadyStartGame)
+            {
+                isReadyStartGame = true;
+                dollSing.Play();
+                Debug.Log(" CheckReadyToStart SocketClient.instance.isSpectator   " + SocketClient.instance.isSpectator);
+            }
+        }
+
             
         Debug.Log("CheckReadyToStart ---------------------------------- " + isReadyStartGame);
     }

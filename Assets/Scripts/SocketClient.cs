@@ -332,7 +332,7 @@ public class SocketClient : MonoBehaviour
 
                 players = JArray.Parse(data["players"].ToString());
                 Debug.Log(" joinRoom joinRoom data ------------------------ " + data);
-                isSpectator = data["isSpectator"].ToString() == "1" ? true : false;
+                
                 currentPlayerJoined = players.Count;
                 Debug.Log(" joinRoom playersssssssss  " + players);
 
@@ -341,7 +341,7 @@ public class SocketClient : MonoBehaviour
                     string _clientId = _player["id"].ToString();
 
                     
-                    Debug.Log("  isSpectator =================  " + isSpectator);
+                   
 
                     playerJoinName = _player["playerName"].ToString();
                     Debug.Log(" clientId =================  " + clientId + "   ---   _clientId ==  " + _clientId);
@@ -357,7 +357,8 @@ public class SocketClient : MonoBehaviour
                     {
                         Debug.Log("  ===========  player =================  " );
                         //  player
-       
+                        isSpectator = _player["isSpectator"].ToString() == "1" ? true : false;
+                        Debug.Log("  isSpectator =================  " + isSpectator);
                         if (_player["isSpectator"].ToString() == "1")
                         {
                             player = Instantiate(spectatorPrefab);
@@ -409,11 +410,10 @@ public class SocketClient : MonoBehaviour
                            otherPlayers[_clientId].transform.position = pos;
                         }
 
-                        if (isSpectator)
+                        if (MainMenu.instance.isSpectator == "1")
                         {
                             otherPlayers[_clientId].GetComponent<OtherPlayer>().SetPlayerNameTextStatus(_player["playerName"].ToString(), true);
                         }
-                        
 
                     }
 
@@ -609,7 +609,7 @@ public class SocketClient : MonoBehaviour
     }
     public void OnHeadTurn()
     {
-        if (isSpectator || !player.GetComponent<PlayerMovement>().isHost) return;
+        if (!isHost) return;
         JObject jsData = new JObject();
         jsData.Add("meta", "headTurn");
         jsData.Add("clientId", clientId);
@@ -658,7 +658,7 @@ public class SocketClient : MonoBehaviour
 
     public void OnEndGame()
     {
-        if (isSpectator || !player.GetComponent<PlayerMovement>().isHost) return;
+        if (!isHost) return;
         JObject jsData = new JObject();
         jsData.Add("meta", "endGame");
         jsData.Add("clientId", clientId);
