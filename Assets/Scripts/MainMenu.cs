@@ -46,18 +46,19 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private TMPro.TMP_InputField inputPlayerName;
 
-    public string deepLinkZaloApp = "https://zalo.me/s/543482719351051682/";
+    public static string deepLinkZaloApp = "https://zalo.me/s/543482719351051682/";
     public string userAppId = "";
     public string userAvatar = "https://h5.zdn.vn/static/images/avatar.png";
     public string playerName = "anonymous";
     public string roomId = "";
     public string isHost = "0";
+    public string gender = "0";
     public string isSpectator = "0"; 
     //public Dictionary<string, GameObject> listPlayers;
     public Dictionary<string, Texture2D> listPlayerAvatars;
 
     //private const string CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    private const string CHARS = "abcdefghijklmnopqrstuvwxyz";
+    private const string CHARS = "0123456789";
     public int length = 6;
 
     TouchScreenKeyboard myKeyboard;
@@ -97,8 +98,9 @@ public class MainMenu : MonoBehaviour
     IEnumerator WaitingReceiver()
     {
         //roomId = "roomid";// test already have room id
+        Debug.Log("  SocketClient.IS_FIRST_JOIN =================  " + SocketClient.IS_FIRST_JOIN);
         yield return new WaitForSeconds(0.5f);
-        if (roomId != "")
+        if (roomId != "" && SocketClient.IS_FIRST_JOIN)
         {
             homeScreen.SetActive(false);
             createRoomScreen.SetActive(false);
@@ -106,7 +108,9 @@ public class MainMenu : MonoBehaviour
             failJoinRoomScreen.SetActive(false);
 
             inputRoomId.text = roomId;
-            JoinRoom();
+            //JoinRoom();
+            gameObject.GetComponent<JoinGameScreen>().SetTextInputRoomId(roomId);
+            UserJoinRoom();
         }
         else
         {
@@ -250,7 +254,7 @@ public class MainMenu : MonoBehaviour
     public void SpectatorJoinRoom()
     {
         OnClickVfx();
-
+        Debug.Log(" ===== SpectatorJoinRoom==== ");
         roomId = inputRoomId.text;
         joinRoomScreen.SetActive(true);
         homeScreen.SetActive(false);

@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
 
-        if (SocketClient.instance.player.GetComponent<PlayerMovement>().isReadyStartGame)
+        //if (SocketClient.instance.player.GetComponent<PlayerMovement>().isReadyStartGame)
         {
             isReadyStartGame = true;
             dollSing.Play();
@@ -149,7 +149,15 @@ public class GameManager : MonoBehaviour
         HeadTime(secs);
 
         //timeText.text = string.Format("{0:00}:{1:00}", mins, secs);
-        SocketClient.instance.player.GetComponent<PlayerMovement>().SetTextGameTimer(string.Format("{0:00}:{1:00}", mins, secs));
+        if (SocketClient.instance.isSpectator)
+        {
+            SocketClient.instance.player.GetComponent<Spectator>().SetTextGameTimer(string.Format("{0:00}:{1:00}", mins, secs));
+        }
+        else
+        {
+            SocketClient.instance.player.GetComponent<PlayerMovement>().SetTextGameTimer(string.Format("{0:00}:{1:00}", mins, secs));
+        }
+        
     }
 
     private void HeadTime(float secs)

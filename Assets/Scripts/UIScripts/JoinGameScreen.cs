@@ -67,6 +67,10 @@ namespace UIElements
             }
 
         }
+        public void SetTextInputRoomId(string _roomId)
+        {
+            m_inputField.text = _roomId;
+        }
         public void OnJoinRoom()
         {
             MainMenu.instance.JoinRoom();

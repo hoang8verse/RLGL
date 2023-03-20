@@ -58,7 +58,7 @@ public class JavaScriptInjected : MonoBehaviour
         // Parse the URL parameters
         string[] parts = url.Split('?');
 
-        MainMenu.instance.deepLinkZaloApp = parts[0];
+        //MainMenu.instance.deepLinkZaloApp = parts[0];
         if (parts.Length > 1)
         {
             string[] urlParams = parts[1].Split('&');

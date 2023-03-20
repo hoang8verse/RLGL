@@ -49,9 +49,10 @@ public class OtherPlayer : MonoBehaviour
     {
         playerNameText.text = name;
     }
-    public void SetPlayerNameTextStatus(bool status)
+    public void SetPlayerNameTextStatus(string name, bool status)
     {
-        playerNameText.gameObject.SetActive(false);
+        playerNameText.text = name;
+        playerNameText.gameObject.SetActive(status);
     }
     public void StartWalking()
     {

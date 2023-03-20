@@ -22,8 +22,7 @@ namespace UIElements
         {
             m_roomID.text = MainMenu.instance.roomId;
 
-            string qrCoreGen = MainMenu.instance.deepLinkZaloApp + "?roomId="+ MainMenu.instance.roomId;
-
+            string qrCoreGen = MainMenu.deepLinkZaloApp + "?roomId="+ MainMenu.instance.roomId;
             m_qrImage.texture = GetQRCodeTexture(qrCoreGen, 256, 256);
         }
 
