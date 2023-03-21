@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Spectator : MonoBehaviour
 {
-    float OFFSET_MOVE = 0.1f;
+    float OFFSET_MOVE = 10f;
     [SerializeField]
     private new Camera camera;
 
@@ -31,20 +31,20 @@ public class Spectator : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftArrow) == true || Input.GetKey(KeyCode.A) == true)
         {
             if (camera.transform.position.x > -120f)
-                camera.transform.position = new Vector3(camera.transform.position.x - OFFSET_MOVE, camera.transform.position.y, camera.transform.position.z);
+                camera.transform.position = new Vector3(camera.transform.position.x - OFFSET_MOVE * Time.deltaTime, camera.transform.position.y, camera.transform.position.z);
         }
         if (Input.GetKey(KeyCode.RightArrow) == true || Input.GetKey(KeyCode.D) == true)
         {
             if (camera.transform.position.x < 120f)
-                camera.transform.position = new Vector3(camera.transform.position.x + OFFSET_MOVE, camera.transform.position.y, camera.transform.position.z);
+                camera.transform.position = new Vector3(camera.transform.position.x + OFFSET_MOVE * Time.deltaTime, camera.transform.position.y, camera.transform.position.z);
         }
         if (Input.GetKey(KeyCode.UpArrow) == true || Input.GetKey(KeyCode.W) == true)
         {
-            camera.fieldOfView -= OFFSET_MOVE;
+            camera.fieldOfView -= OFFSET_MOVE * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.DownArrow) == true || Input.GetKey(KeyCode.S) == true)
         {
-            camera.fieldOfView += OFFSET_MOVE;
+            camera.fieldOfView += OFFSET_MOVE * Time.deltaTime;
         }
         if (Input.GetAxis("Mouse ScrollWheel") != 0)
         {
