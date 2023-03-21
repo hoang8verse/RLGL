@@ -91,12 +91,14 @@ namespace UIElements
             switch (mode)
             {
                 case "0":
+                    MainMenu.instance.isSpectator = "0";
                     MainMenu.instance.gender = "0";
                     m_chooseRingButton.gameObject.SetActive(true);
                     m_chooseRingButton.transform.position = m_menPlayerButton.transform.position;
                     break;
 
                 case "1":
+                    MainMenu.instance.isSpectator = "0";
                     MainMenu.instance.gender = "1";
                     m_chooseRingButton.gameObject.SetActive(true);
                     m_chooseRingButton.transform.position = m_womenPlayerButton.transform.position;

@@ -87,7 +87,7 @@ public class JavaScriptInjected : MonoBehaviour
                     }
                     if (key == "userName")
                     {
-                        MainMenu.instance.playerName = value.Replace("%20"," ");
+                        MainMenu.instance.playerName = System.Uri.UnescapeDataString(value);
                     }
                     if (key == "userAvatar")
                     {

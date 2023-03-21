@@ -47,7 +47,7 @@ namespace UIElements
         }
         public void OnExitScreen()
         {
-        
+             MainMenu.instance.BackToMainMenu();
         }
 
         private Texture2D GetQRCodeTexture(string text, int width, int height)

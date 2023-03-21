@@ -321,6 +321,13 @@ public class MainMenu : MonoBehaviour
     {
         GUIUtility.systemCopyBuffer = roomId;
     }
+    public void BackToMainMenu()
+    {
+        homeScreen.SetActive(true);
+        joinRoomScreen.SetActive(false);
+        createRoomScreen.SetActive(false);
+        SocketClient.instance.OnCloseConnectSocket();
+    }
 
     public void ShareLinkToInvite()
     {
