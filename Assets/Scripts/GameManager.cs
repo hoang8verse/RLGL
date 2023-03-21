@@ -36,10 +36,7 @@ public class GameManager : MonoBehaviour
     public float speedHeadTurn = 3;
 
     [SerializeField]
-    private int totalBots;
-    
-    public GameObject Spectator;
-
+    private int totalBots;        
 
     public Transform DeathZone;
     public Transform SpawnArea;
