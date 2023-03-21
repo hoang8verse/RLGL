@@ -6,8 +6,14 @@ namespace UIElements
 {
     public class JoinGameScreen : Screen
     {
+        [Header("ChoosePlayMode")]
+        [SerializeField] Button m_menPlayerButton;
+        [SerializeField] Button m_womenPlayerButton;
+        [SerializeField] Button m_spectatorButton;
+        [SerializeField] Image m_chooseRingButton;
+
         [SerializeField] TMP_InputField m_inputField;
-        [SerializeField] TextMeshProUGUI m_notificationText;
+        [SerializeField] TextMeshProUGUI m_notificationText;        
 
         [SerializeField]
         private string m_roomIDEntered;
@@ -74,6 +80,34 @@ namespace UIElements
         public void OnJoinRoom()
         {
             MainMenu.instance.JoinRoom();
+        }
+        public void OnUseQRScan()
+        {
+            
+        }
+
+        public void OnChoosePlayerMode(string mode)
+        {
+            switch (mode)
+            {
+                case "0":
+                    MainMenu.instance.gender = "0";
+                    m_chooseRingButton.gameObject.SetActive(true);
+                    m_chooseRingButton.transform.position = m_menPlayerButton.transform.position;
+                    break;
+
+                case "1":
+                    MainMenu.instance.gender = "1";
+                    m_chooseRingButton.gameObject.SetActive(true);
+                    m_chooseRingButton.transform.position = m_womenPlayerButton.transform.position;
+                    break;
+
+                case "2":
+                    MainMenu.instance.isSpectator = "1";
+                    m_chooseRingButton.gameObject.SetActive(true);
+                    m_chooseRingButton.transform.position = m_spectatorButton.transform.position;
+                    break;
+            }
         }
         public void OnExitScreen()
         {
