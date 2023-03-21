@@ -7,6 +7,12 @@ namespace UIElements
 {
     public class CreateGameScreen : Screen
     {
+        [Header("ChoosePlayMode")]
+        [SerializeField] Button m_menPlayerButton;
+        [SerializeField] Button m_womenPlayerButton;
+        [SerializeField] Image m_chooseRingButton;
+
+        [Header("AdjustPlayerNumber")]
         [SerializeField] TMP_InputField m_inputField;
         [SerializeField] Button m_increaseButton;
         [SerializeField] Button m_decreaseButton;
@@ -33,6 +39,24 @@ namespace UIElements
         public void OnExitScreen()
         {
 
+        }
+        #endregion
+
+        #region ChoosePlayMode
+        public void OnChoosePlayerMode(bool isMen)
+        {
+            if (isMen)
+            {
+                MainMenu.instance.gender = "0";
+                m_chooseRingButton.gameObject.SetActive(true);
+                m_chooseRingButton.transform.position = m_menPlayerButton.transform.position;
+            }
+            else
+            {
+                MainMenu.instance.gender = "1";
+                m_chooseRingButton.gameObject.SetActive(true);
+                m_chooseRingButton.transform.position = m_womenPlayerButton.transform.position;
+            }
         }
         #endregion
 
