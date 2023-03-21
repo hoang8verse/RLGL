@@ -18,8 +18,8 @@ public class PlayerResult : MonoBehaviour
     [SerializeField] GameObject m_loseMark;
 
     public bool IsWin => m_isWin;
-    private Color VICTORY_COLOR = new Color32(0x16, 0x55, 0x1E, 0xFF);
-    private Color DEFEAT_COLOR = new Color(226f / 255f, 226f / 255f, 226f / 255f);
+    private Color VICTORY_COLOR = new Color32(22, 85, 30, 255);
+    private Color DEFEAT_COLOR = new Color32(226, 226, 226, 255);
 
     // Start is called before the first frame update
     void Start()
