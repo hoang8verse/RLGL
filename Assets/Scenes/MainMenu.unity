@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -410,6 +410,11 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 1374144583}
     m_Modifications:
+    - target: {fileID: 7829636617857342021, guid: c0302ba6f80ce744aa868be0a35e3fc8,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -350
+      objectReference: {fileID: 0}
     - target: {fileID: 7829636618191349390, guid: c0302ba6f80ce744aa868be0a35e3fc8,
         type: 3}
       propertyPath: m_Pivot.x
@@ -524,6 +529,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7829636618233079642, guid: c0302ba6f80ce744aa868be0a35e3fc8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7829636618509462700, guid: c0302ba6f80ce744aa868be0a35e3fc8,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -350
+      objectReference: {fileID: 0}
+    - target: {fileID: 7829636618509462701, guid: c0302ba6f80ce744aa868be0a35e3fc8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8689942795561048432, guid: c0302ba6f80ce744aa868be0a35e3fc8,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 190
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
@@ -3707,6 +3732,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3026cbfb8596f44aa243a78daf2909, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1186670480 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7829636618191349391, guid: c0302ba6f80ce744aa868be0a35e3fc8,
+    type: 3}
+  m_PrefabInstance: {fileID: 182259591}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1187036497
 GameObject:
   m_ObjectHideFlags: 0
@@ -4588,9 +4619,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   homeScreen: {fileID: 342328055}
-  createRoomScreen: {fileID: 2030000152}
+  createRoomScreen: {fileID: 1186670480}
   joinRoomScreen: {fileID: 745126860}
-  failJoinRoomScreen: {fileID: 2127499889}
+  lobbyScreen: {fileID: 2030000152}
   failMessage: {fileID: 1561752885}
   hostButtonJoinGame: {fileID: 1575072636}
   transformPlayers: {fileID: 1579139657}

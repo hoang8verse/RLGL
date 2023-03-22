@@ -34,11 +34,11 @@ namespace UIElements
         #region MainEventButton
         public void OnCreateRoom()
         {
-
+            MainMenu.instance.JoinRoom();
         }
         public void OnExitScreen()
         {
-
+            MainMenu.instance.FailToJoinRoom();
         }
         #endregion
 

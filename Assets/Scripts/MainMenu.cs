@@ -18,7 +18,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private GameObject joinRoomScreen;
     [SerializeField]
-    private GameObject failJoinRoomScreen;
+    private GameObject lobbyScreen;
     [SerializeField]
     private TMPro.TextMeshProUGUI failMessage;
     [SerializeField]
@@ -105,7 +105,7 @@ public class MainMenu : MonoBehaviour
             homeScreen.SetActive(false);
             createRoomScreen.SetActive(false);
             joinRoomScreen.SetActive(true);
-            failJoinRoomScreen.SetActive(false);
+            lobbyScreen.SetActive(false);
 
             inputRoomId.text = roomId;
             //JoinRoom();
@@ -117,7 +117,7 @@ public class MainMenu : MonoBehaviour
             homeScreen.SetActive(true);
             createRoomScreen.SetActive(false);
             joinRoomScreen.SetActive(false);
-            failJoinRoomScreen.SetActive(false);
+            lobbyScreen.SetActive(false);
         }
 
         bg_Music.Play(0);
@@ -216,9 +216,10 @@ public class MainMenu : MonoBehaviour
     }
     public void ShowLobby()
     {
-        createRoomScreen.SetActive(true);
+        createRoomScreen.SetActive(false);
         homeScreen.SetActive(false);
         joinRoomScreen.SetActive(false);
+        lobbyScreen.SetActive(true);
         CheckTheHost();
     }
     public void JoinTheGame()
@@ -240,7 +241,9 @@ public class MainMenu : MonoBehaviour
         roomId = Generate();
         //RoomId.text = "Room ID : " +  roomId;
         isHost = "1";
-        JoinRoom();
+        //JoinRoom();
+        createRoomScreen.SetActive(true);
+        homeScreen.SetActive(false);
     }
     public void UserJoinRoom()
     {
@@ -282,7 +285,7 @@ public class MainMenu : MonoBehaviour
         homeScreen.SetActive(true);
         joinRoomScreen.SetActive(false);
         createRoomScreen.SetActive(false);
-        failJoinRoomScreen.SetActive(false);
+        lobbyScreen.SetActive(false);
     }
 
     //public void AddPlayerJoinRoom(string _clientId, string _playerName, int index)
@@ -310,10 +313,10 @@ public class MainMenu : MonoBehaviour
 
     public void AddPlayerJoinRoomByAvatar(Texture2D avatar, string playerID, int index)
     {
-        if(avatar != null && index < createRoomScreen.GetComponent<LobbyScreen>().avatarsLists.Count - 1)
+        if(avatar != null && index < lobbyScreen.GetComponent<LobbyScreen>().avatarsLists.Count - 1)
         {
             listPlayerAvatars.Add(playerID, avatar);
-            createRoomScreen.GetComponent<LobbyScreen>().SetAvatarForPlayer(avatar, index);
+            lobbyScreen.GetComponent<LobbyScreen>().SetAvatarForPlayer(avatar, index);
         }
     }
 
@@ -326,6 +329,7 @@ public class MainMenu : MonoBehaviour
         homeScreen.SetActive(true);
         joinRoomScreen.SetActive(false);
         createRoomScreen.SetActive(false);
+        lobbyScreen.SetActive(false);
         SocketClient.instance.OnCloseConnectSocket();
     }
 
