@@ -81,6 +81,12 @@ public class OtherPlayer : MonoBehaviour
         PlayAnimationSmoothly("Dying", 0.25f);
     }
 
+    public void SetWinPlayer()
+    {
+        isWalking = false;
+        PlayAnimationSmoothly("Victory", 0.25f);
+    }
+
     private void PlayAnimationSmoothly(string animationName, float delayTime)
     {
         if (animationPlaying == animationName)

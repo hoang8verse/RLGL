@@ -27,6 +27,7 @@ namespace UIElements
             for (int i = 0; i < listAvatarAvailable.Length; i++)
             {
                 listAvatarAvailable[i] = 0;
+                avatarsLists[i].gameObject.GetComponent<RawImage>().texture = m_avatarDefault;
             }
             m_roomID.text = MainMenu.instance.roomId;
 

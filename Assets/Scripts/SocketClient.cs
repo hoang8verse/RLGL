@@ -445,7 +445,10 @@ public class SocketClient : MonoBehaviour
                     otherPlayers[data["clientId"].ToString()].GetComponent<OtherPlayer>().SetDeadPlayer();
                 break;
             case "playerWin":
+                Debug.Log("  playerWin data ==========  " + data);
 
+                if (otherPlayers.ContainsKey(data["clientId"].ToString()))
+                    otherPlayers[data["clientId"].ToString()].GetComponent<OtherPlayer>().SetWinPlayer();
                 break;
             case "endGame":
                 Debug.Log("  endGame data ==========  " + data);
@@ -679,7 +682,6 @@ public class SocketClient : MonoBehaviour
     {
         clientId = "";
         ROOM = "";
-        Destroy(player);
         MainMenu.instance.ResetAvatarList();
         await webSocket.Close();
     }

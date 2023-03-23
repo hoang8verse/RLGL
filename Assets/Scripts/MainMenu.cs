@@ -300,7 +300,7 @@ public class MainMenu : MonoBehaviour
     public void ResetAvatarList()
     {
         listPlayerAvatars = new Dictionary<string, Texture2D>();
-        lobbyScreen.GetComponent<LobbyScreen>().ResetAvatarList();
+            
     }
     public void RemovePlayerJoinRoomByAvatar(string playerID)
     {
@@ -317,7 +317,7 @@ public class MainMenu : MonoBehaviour
         joinRoomScreen.SetActive(false);
         createRoomScreen.SetActive(false);
         lobbyScreen.SetActive(false);
-        
+        lobbyScreen.GetComponent<LobbyScreen>().ResetAvatarList();
         SocketClient.instance.OnCloseConnectSocket();
     }
 
