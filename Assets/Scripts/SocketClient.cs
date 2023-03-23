@@ -409,7 +409,7 @@ public class SocketClient : MonoBehaviour
                     }
 
                 }
-
+                
                 break;
             case "startGame":
                 Debug.Log("  startGame =================  " + data);
@@ -423,7 +423,16 @@ public class SocketClient : MonoBehaviour
                     player.GetComponent<PlayerMovement>().StartGame();
                 }
                 break;
-
+            case "countDown":
+                //Debug.Log("  countDown =================  " + data);
+                float timer = float.Parse(data["timer"].ToString());
+                GameManager.instance.timeValue = timer;
+                if(Mathf.FloorToInt(timer) > 0)
+                {
+                    OnCountDown();
+                }
+                
+                break;
             case "moving":
 
                 if (otherPlayers.ContainsKey(data["clientId"].ToString()))
@@ -607,7 +616,16 @@ public class SocketClient : MonoBehaviour
         JObject jsData = new JObject();
         jsData.Add("meta", "startGame");
         jsData.Add("room", ROOM);
-
+        jsData.Add("maxTime", GameManager.instance.timeValue);
+        Send(Newtonsoft.Json.JsonConvert.SerializeObject(jsData).ToString());
+    }
+    public void OnCountDown()
+    {
+        if (!isHost) return;
+        Debug.Log(" OnCountDown =================  ");
+        JObject jsData = new JObject();
+        jsData.Add("meta", "countDown");
+        jsData.Add("room", ROOM);
         Send(Newtonsoft.Json.JsonConvert.SerializeObject(jsData).ToString());
     }
     public void OnHeadTurn()

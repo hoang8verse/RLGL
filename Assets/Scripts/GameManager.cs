@@ -105,8 +105,9 @@ public class GameManager : MonoBehaviour
                 Debug.Log(" CheckReadyToStart SocketClient.instance.isSpectator   " + SocketClient.instance.isSpectator);
             }
         }
+        SocketClient.instance.OnCountDown();
 
-            
+
         Debug.Log("CheckReadyToStart ---------------------------------- " + isReadyStartGame);
     }
 
@@ -118,7 +119,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(isReadyStartGame)
+        if (isReadyStartGame)
             CountDown();
     }
 
@@ -135,25 +136,29 @@ public class GameManager : MonoBehaviour
 
     private void CountDown()
     {
-        if (timeValue > 0)
-        {
-            timeValue -= Time.deltaTime;
-        }
-        else
-        {
-            timeValue = 0;
-        }
-
+        //if (timeValue > 0)
+        //{
+        //    timeValue -= Time.deltaTime;
+        //}
+        //else
+        //{
+        //    timeValue = 0;
+        //}
+        
         DisplayTime(timeValue);
     }
 
     private void DisplayTime(float timeToDisplay)
     {
+       
         if (timeToDisplay < 0)
             timeToDisplay = 0;
 
         float mins = Mathf.FloorToInt(timeToDisplay / 60);
         float secs = Mathf.FloorToInt(timeToDisplay % 60);
+
+        timeValue = timeToDisplay;
+        
         HeadTime(secs);
 
         //timeText.text = string.Format("{0:00}:{1:00}", mins, secs);
@@ -185,9 +190,10 @@ public class GameManager : MonoBehaviour
         //Debug.Log(" secs ==============  " + secs + "  lastTimeToHead ===  " + lastTimeToHead);
         if (secs % headTimer == 0 && secs != lastTimeToHead)
         {
-            Debug.Log(" secs % headTimer ==============  " + secs % headTimer + "  lastTimeToHead ===  " + (secs != lastTimeToHead));
+            //Debug.Log(" secs % headTimer ==============  " + secs % headTimer + "  lastTimeToHead ===  " + (secs != lastTimeToHead));
             lastTimeToHead = secs;
             headTime = !headTime;
+
             //SocketClient.instance.OnHeadTurn();
             if (headTime)
             {

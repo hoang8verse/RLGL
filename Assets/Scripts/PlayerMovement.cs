@@ -143,7 +143,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else if (touch.phase == TouchPhase.Moved)
                 {
-                    Debug.Log(" ================= GetTouch mobile  movingggggggg ===========  ");
+                    //Debug.Log(" ================= GetTouch mobile  movingggggggg ===========  ");
                 }
                 else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
                 {
@@ -172,7 +172,7 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetMouseButton(0)) // 0 : left , 1 : right, 2 : wheel
             {
                 //anim.Play("Walk");            
-                Debug.Log(" ======================== GetMouseButton movingggggggggggggggggggggggggg ===========  ");
+                //Debug.Log(" ======================== GetMouseButton movingggggggggggggggggggggggggg ===========  ");
             }
             else
             if (Input.GetMouseButtonUp(0))
