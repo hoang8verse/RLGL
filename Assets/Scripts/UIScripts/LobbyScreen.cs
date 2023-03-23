@@ -11,8 +11,10 @@ namespace UIElements
     {
         [SerializeField] TextMeshProUGUI m_roomID;
         [SerializeField] RawImage m_qrImage;
-        [SerializeField] Dictionary<string, PlayerAvatar> m_playerAvatarsList;
+        [SerializeField] Texture2D m_avatarDefault;
+        [SerializeField] Dictionary<string, int> m_playerAvatarsList;
         public List<PlayerAvatar> avatarsLists;
+        int[] listAvatarAvailable;
 
         public string RoomID => m_roomID.text;
         public RawImage QRImage => m_qrImage;
@@ -20,18 +22,53 @@ namespace UIElements
         // Start is called before the first frame update
         void Start()
         {
+            m_playerAvatarsList = new Dictionary<string, int>();
+            listAvatarAvailable = new int[avatarsLists.Count];
+            for (int i = 0; i < listAvatarAvailable.Length; i++)
+            {
+                listAvatarAvailable[i] = 0;
+            }
             m_roomID.text = MainMenu.instance.roomId;
 
             string qrCoreGen = MainMenu.deepLinkZaloApp + "?roomId="+ MainMenu.instance.roomId;
             m_qrImage.texture = GetQRCodeTexture(qrCoreGen, 256, 256);
         }
-
-        public void SetAvatarForPlayer(Texture2D avatarImage, int index)
+        
+        int GetIndexAvatarValid()
         {
-            //m_playerAvatarsList[playerID].SetAvatarImage(avatarImage);
-            //avatarsLists[index].SetAvatarImage(ImageLoader.instance.textureImageUrl);
+            for (int i = 0; i < listAvatarAvailable.Length; i++)
+            {
+                if( listAvatarAvailable[i] == 0)
+                {
+                    listAvatarAvailable[i] = 1;
+                    return i;
+                }
+            }
+            return -1;
+        }
 
+        public void SetAvatarForPlayer(Texture2D avatarImage, string playerId)
+        {
+            int index = GetIndexAvatarValid();
+            if (index == -1) return;
+            m_playerAvatarsList[playerId] = index;
             avatarsLists[index].gameObject.GetComponent<RawImage>().texture = avatarImage;
+        }
+        public void RemoveAvatarForPlayer(string playerId)
+        {
+            int index = m_playerAvatarsList[playerId];
+            listAvatarAvailable[index] = 0;
+            avatarsLists[index].gameObject.GetComponent<RawImage>().texture = m_avatarDefault;
+        }
+
+        public void ResetAvatarList()
+        {
+            for (int i = 0; i < avatarsLists.Count; i++)
+            {
+                listAvatarAvailable[i] = 0;
+                avatarsLists[i].gameObject.GetComponent<RawImage>().texture = m_avatarDefault;
+            }
+
         }
         public void SetRoomID(string roomID)
         {

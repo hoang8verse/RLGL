@@ -288,36 +288,23 @@ public class MainMenu : MonoBehaviour
         lobbyScreen.SetActive(false);
     }
 
-    //public void AddPlayerJoinRoom(string _clientId, string _playerName, int index)
-    //{
-    //    Debug.Log(" index ================   " + index);
-    //    Vector3 pos = new Vector3(0, -100 * index + 160, 0);
-    //    TMPro.TextMeshProUGUI user = playerPrefab;
-    //    string _text = _playerName + " is join the game." ;
 
-    //    user.text = _text;
-    //    if (_clientId != SocketClient.instance.clientId)
-    //    {
-    //        user.color = Color.white;
-    //    }
-    //    else
-    //    {
-    //        user.color = Color.green;
-    //    }
-    //    user.gameObject.SetActive(true);
-    //    Debug.Log(" pos ================   " + pos);
-    //    listPlayers[_clientId] = Instantiate(user.gameObject, transformPlayers);
-    //    listPlayers[_clientId].transform.localPosition = pos;
-    //    playerPrefab.gameObject.SetActive(false);
-    //}
-
-    public void AddPlayerJoinRoomByAvatar(Texture2D avatar, string playerID, int index)
+    public void AddPlayerJoinRoomByAvatar(Texture2D avatar, string playerID)
     {
-        if(avatar != null && index < lobbyScreen.GetComponent<LobbyScreen>().avatarsLists.Count - 1)
+        if(avatar != null)
         {
             listPlayerAvatars.Add(playerID, avatar);
-            lobbyScreen.GetComponent<LobbyScreen>().SetAvatarForPlayer(avatar, index);
+            lobbyScreen.GetComponent<LobbyScreen>().SetAvatarForPlayer(avatar, playerID);
         }
+    }
+    public void ResetAvatarList()
+    {
+        listPlayerAvatars = new Dictionary<string, Texture2D>();
+        lobbyScreen.GetComponent<LobbyScreen>().ResetAvatarList();
+    }
+    public void RemovePlayerJoinRoomByAvatar(string playerID)
+    {
+        lobbyScreen.GetComponent<LobbyScreen>().RemoveAvatarForPlayer(playerID);
     }
 
     public void CopyToClipboard()
@@ -330,6 +317,7 @@ public class MainMenu : MonoBehaviour
         joinRoomScreen.SetActive(false);
         createRoomScreen.SetActive(false);
         lobbyScreen.SetActive(false);
+        
         SocketClient.instance.OnCloseConnectSocket();
     }
 

@@ -33,11 +33,7 @@ public class SocketClient : MonoBehaviour
     static string baseUrl = "ws://192.168.1.39";
     static string HOST = "8081";
 
-    //static string baseUrl = "ws://34.87.31.157";
-    //static string HOST = "8081";
-
-
-    //static string baseUrl = "ws://34.87.31.157";
+    //static string baseUrl = "wss://rlgl2-api.brandgames.vn";
     //static string HOST = "8081";
 
     public string ROOM = "";
@@ -305,14 +301,12 @@ public class SocketClient : MonoBehaviour
                 if (data["clientId"].ToString() == clientId && player == null)
                 {
                     
-                    int indexPlayer = 0;
                     for (int i = 0; i < players.Count; i++)
                     {
                         //MainMenu.instance.AddPlayerJoinRoom(players[i]["id"].ToString(),players[i]["playerName"].ToString(), i);
                         if (players[i]["isSpectator"].ToString() == "0")
                         {
-                            StartCoroutine(LoadAvatarImage(players[i]["avatar"].ToString(), players[i]["id"].ToString(), indexPlayer));
-                            indexPlayer++;
+                            StartCoroutine(LoadAvatarImage(players[i]["avatar"].ToString(), players[i]["id"].ToString()));
                         }
                     }
                 } 
@@ -321,7 +315,7 @@ public class SocketClient : MonoBehaviour
                 {
                     //MainMenu.instance.AddPlayerJoinRoom(data["clientId"].ToString(), data["playerName"].ToString(), players.Count - 1);
                     if (data["isSpectator"].ToString() == "0")
-                        StartCoroutine(LoadAvatarImage(data["avatar"].ToString(), data["clientId"].ToString(), players.Count - 1));
+                        StartCoroutine(LoadAvatarImage(data["avatar"].ToString(), data["clientId"].ToString()));
                 }
 
                 break;
@@ -339,9 +333,6 @@ public class SocketClient : MonoBehaviour
                 foreach (var _player in players)
                 {
                     string _clientId = _player["id"].ToString();
-
-                    
-                   
 
                     playerJoinName = _player["playerName"].ToString();
                     Debug.Log(" clientId =================  " + clientId + "   ---   _clientId ==  " + _clientId);
@@ -505,13 +496,21 @@ public class SocketClient : MonoBehaviour
                     //Debug.Log(" players player leave ==   " + players[i].ToString());
                     if (playerLeaveId == players[i]["id"].ToString())
                     {
+                        if (player == null)
+                        {
+                            if (players[i]["isSpectator"].ToString() == "0")
+                                MainMenu.instance.RemovePlayerJoinRoomByAvatar(playerLeaveId);
+                        }
                         players.RemoveAt(i);
                         Debug.Log(" players playerLeaveRoom 222222222222222  " + playerLeaveId);
 
                     }
                 }
 
+                // check in lobby screen
+
                 
+
                 // check new host 
                 string checkNewHost = data["newHost"].ToString();
                 
@@ -554,6 +553,7 @@ public class SocketClient : MonoBehaviour
     {
 
         Debug.Log("  MainMenu.instance.isSpectator OnJoinLobbyRoom   " + MainMenu.instance.isSpectator);
+        Debug.Log("  MainMenu.instance.gender gender   " + MainMenu.instance.gender);
         string playerName = MainMenu.instance.playerName;
 
         if (playerName.Length <= 1)
@@ -677,10 +677,14 @@ public class SocketClient : MonoBehaviour
 
     public async void OnCloseConnectSocket()
     {
+        clientId = "";
+        ROOM = "";
+        Destroy(player);
+        MainMenu.instance.ResetAvatarList();
         await webSocket.Close();
     }
 
-    IEnumerator LoadAvatarImage(string imageUrl, string playerID, int index)
+    IEnumerator LoadAvatarImage(string imageUrl, string playerID)
     {
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageUrl);
         yield return request.SendWebRequest();
@@ -689,13 +693,13 @@ public class SocketClient : MonoBehaviour
         {
             Debug.Log(request.error);
             Texture2D textureImageUrl = null;
-            MainMenu.instance.AddPlayerJoinRoomByAvatar(textureImageUrl, playerID, index);
+            MainMenu.instance.AddPlayerJoinRoomByAvatar(textureImageUrl, playerID);
         }
         else
         {
             Texture2D textureImageUrl = ((DownloadHandlerTexture)request.downloadHandler).texture;
             // use the texture here
-            MainMenu.instance.AddPlayerJoinRoomByAvatar(textureImageUrl, playerID, index);
+            MainMenu.instance.AddPlayerJoinRoomByAvatar(textureImageUrl, playerID);
         }
     }
 

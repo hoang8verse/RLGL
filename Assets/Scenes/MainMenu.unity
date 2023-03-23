@@ -1140,6 +1140,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1193695485118913386, guid: dcaebb2ddd2a8ba4a8ca545598a5dbb4,
         type: 3}
+      propertyPath: m_avatarDefault
+      value: 
+      objectReference: {fileID: 2800000, guid: 1ce2b5264ebb0214fb996cddfad3c873, type: 3}
+    - target: {fileID: 1193695485118913386, guid: dcaebb2ddd2a8ba4a8ca545598a5dbb4,
+        type: 3}
       propertyPath: avatarsLists.Array.size
       value: 13
       objectReference: {fileID: 0}
