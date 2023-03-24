@@ -15,6 +15,7 @@ using Newtonsoft.Json.Linq;
 // Use plugin namespace
 using NativeWebSocket;
 using Random = UnityEngine.Random;
+using System.Linq;
 //using System.Globalization;
 
 public class SocketClient : MonoBehaviour
@@ -462,17 +463,18 @@ public class SocketClient : MonoBehaviour
             case "endGame":
                 Debug.Log("  endGame data ==========  " + data);
                 players = JArray.Parse(data["players"].ToString());
-
+                JArray sortedJArray = new JArray(players.OrderByDescending(j => j["timeWin"]));
+                Debug.Log("  sortedJArray data ==========  " + sortedJArray);
                 int indexPlayerEnd = 0;
                 if (isSpectator)
                 {
                     // code spectator screen here
-                    for (int i = 0; i < players.Count; i++)
+                    for (int i = 0; i < sortedJArray.Count; i++)
                     {
-                        if (players[i]["isSpectator"].ToString() == "0")
+                        if (sortedJArray[i]["isSpectator"].ToString() == "0")
                         {
-                            Texture2D avatar = MainMenu.instance.listPlayerAvatars[players[i]["id"].ToString()];
-                            player.GetComponent<Spectator>().AddPlayerResult(avatar, players[i]["playerName"].ToString(), players[i]["playerStatus"].ToString(), indexPlayerEnd);
+                            Texture2D avatar = MainMenu.instance.listPlayerAvatars[sortedJArray[i]["id"].ToString()];
+                            player.GetComponent<Spectator>().AddPlayerResult(avatar, sortedJArray[i]["playerName"].ToString(), sortedJArray[i]["playerStatus"].ToString(), indexPlayerEnd);
                             indexPlayerEnd++;
                             //player.GetComponent<PlayerMovement>().AddPlayerResult(players[i]["playerName"].ToString(), players[i]["playerStatus"].ToString(), i);
                         }
@@ -482,12 +484,12 @@ public class SocketClient : MonoBehaviour
                 }
                 else
                 {
-                    for (int i = 0; i < players.Count; i++)
+                    for (int i = 0; i < sortedJArray.Count; i++)
                     {
-                        if(players[i]["isSpectator"].ToString() == "0")
+                        if(sortedJArray[i]["isSpectator"].ToString() == "0")
                         {
-                            Texture2D avatar = MainMenu.instance.listPlayerAvatars[players[i]["id"].ToString()];
-                            player.GetComponent<PlayerMovement>().AddPlayerResult(avatar, players[i]["playerName"].ToString(), players[i]["playerStatus"].ToString(), indexPlayerEnd);
+                            Texture2D avatar = MainMenu.instance.listPlayerAvatars[sortedJArray[i]["id"].ToString()];
+                            player.GetComponent<PlayerMovement>().AddPlayerResult(avatar, sortedJArray[i]["playerName"].ToString(), sortedJArray[i]["playerStatus"].ToString(), indexPlayerEnd);
                             indexPlayerEnd++;
                             //player.GetComponent<PlayerMovement>().AddPlayerResult(players[i]["playerName"].ToString(), players[i]["playerStatus"].ToString(), i);
                         }
