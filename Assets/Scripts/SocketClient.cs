@@ -292,7 +292,7 @@ public class SocketClient : MonoBehaviour
 
                 IS_FIRST_JOIN = false;
                 MainMenu.instance.ShowLobby();
-                
+
                 players = JArray.Parse(data["players"].ToString());
 
                 currentPlayerJoined = players.Count;
@@ -324,7 +324,8 @@ public class SocketClient : MonoBehaviour
                     if (data["isSpectator"].ToString() == "0")
                         StartCoroutine(LoadAvatarImage(data["avatar"].ToString(), data["clientId"].ToString()));
                 }
-                MainMenu.instance.ShowPlayerJoinRoom(data["playerName"].ToString(), players.Count , countSpectator);
+                MainMenu.instance.ShowPlayerJoinRoom(data["playerName"].ToString());
+                MainMenu.instance.ShowTotalPlayers(players.Count);
 
                 break;
             case "gotoGame":
@@ -520,7 +521,10 @@ public class SocketClient : MonoBehaviour
                         if (player == null)
                         {
                             if (players[i]["isSpectator"].ToString() == "0")
+                            {
                                 MainMenu.instance.RemovePlayerJoinRoomByAvatar(playerLeaveId);
+                            }
+                            MainMenu.instance.ShowTotalPlayers(players.Count);
                         }
                         players.RemoveAt(i);
                         Debug.Log(" players playerLeaveRoom 222222222222222  " + playerLeaveId);
@@ -535,7 +539,7 @@ public class SocketClient : MonoBehaviour
                 // check new host 
                 string checkNewHost = data["newHost"].ToString();
                 
-                if (checkNewHost != "" && checkNewHost == clientId && !isSpectator)
+                if (checkNewHost != "" && checkNewHost == clientId)
                 {
                     isHost = true;
 

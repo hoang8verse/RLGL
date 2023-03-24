@@ -214,9 +214,13 @@ public class MainMenu : MonoBehaviour
         //joinRoomScreen.SetActive(false);
         //CheckTheHost();
     }
-    public void ShowPlayerJoinRoom(string playerName , int player , int spectator)
+    public void ShowPlayerJoinRoom(string playerName)
     {
-        lobbyScreen.GetComponent<LobbyScreen>().ShowPlayerJoinRoom(playerName, player, spectator);
+        lobbyScreen.GetComponent<LobbyScreen>().ShowPlayerJoinRoom(playerName);
+    }
+    public void ShowTotalPlayers(int player)
+    {
+        lobbyScreen.GetComponent<LobbyScreen>().SetTotalPlayer(player.ToString());
     }
     public void ShowLobby()
     {

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9151624309522343992}
   - component: {fileID: 6342026782544708239}
-  - component: {fileID: 3363942519862057827}
+  - component: {fileID: 2111937181476273540}
   m_Layer: 5
   m_Name: GuidingText (3)
   m_TagString: Untagged
@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 800, y: 50}
+  m_SizeDelta: {x: 900, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6342026782544708239
 CanvasRenderer:
@@ -46,7 +46,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1072987150826247029}
   m_CullTransparentMesh: 1
---- !u!114 &3363942519862057827
+--- !u!114 &2111937181476273540
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -66,18 +66,18 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Nh\u1EA5n n\xFAt (+) \u0111\u1EC3 m\u1EDDi th\xEAm b\u1EA1n b\xE8"
+  m_text: Player tham gia game
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 933cdb7d9aff5b443aada4eccb6e3401, type: 2}
-  m_sharedMaterial: {fileID: 931592671131371729, guid: 933cdb7d9aff5b443aada4eccb6e3401,
+  m_fontAsset: {fileID: 11400000, guid: 15381f87e13045649963c8ce07656baf, type: 2}
+  m_sharedMaterial: {fileID: 5344367035169881610, guid: 15381f87e13045649963c8ce07656baf,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4280177942
+  m_fontColor: {r: 0.08627451, g: 0.33333334, b: 0.11764706, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -110,7 +110,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -1509,6 +1509,7 @@ MonoBehaviour:
   m_roomID: {fileID: 1193695486408015151}
   m_qrImage: {fileID: 1193695486501135339}
   m_avatarDefault: {fileID: 0}
+  m_TotalPlayer: {fileID: 0}
   m_playerJoinRoom: {fileID: 0}
   avatarsLists: []
 --- !u!1 &1193695485137626197
@@ -3122,7 +3123,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Nh\u1EA5n n\xFAt (+) \u0111\u1EC3 m\u1EDDi th\xEAm b\u1EA1n b\xE8"
+  m_text: "T\u1ED5ng s\u1ED1 ng\u01B0\u1EDDi tham gia"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 933cdb7d9aff5b443aada4eccb6e3401, type: 2}
   m_sharedMaterial: {fileID: 931592671131371729, guid: 933cdb7d9aff5b443aada4eccb6e3401,

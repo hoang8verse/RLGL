@@ -40,10 +40,8 @@ namespace UIElements
             SetTotalPlayer("");
             SetPlayerJoin("");
         }
-        public void ShowPlayerJoinRoom(string _playerName, int player, int spectator)
+        public void ShowPlayerJoinRoom(string _playerName)
         {
-            
-            SetTotalPlayer(player.ToString());
             SetPlayerJoin(_playerName);
             StartCoroutine(FadeIn());
         }
@@ -54,7 +52,7 @@ namespace UIElements
             m_playerJoinRoom.text = text;
             //Debug.Log("m_playerJoinRoom.text==============  " + m_playerJoinRoom.text);
         }
-        void SetTotalPlayer(string _totalPlayer)
+        public void SetTotalPlayer(string _totalPlayer)
         {
             if (_totalPlayer == "") return;
             string text = "Tổng số người đã tham gia: " + _totalPlayer.ToString() + " người";
