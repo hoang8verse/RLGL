@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log(" CheckReadyToStart SocketClient.instance.isSpectator   " + SocketClient.instance.isSpectator);
             }
         }
-        //SocketClient.instance.OnCountDown();
+        SocketClient.instance.OnCountDown();
 
 
         Debug.Log("CheckReadyToStart ---------------------------------- " + isReadyStartGame);
@@ -136,14 +136,14 @@ public class GameManager : MonoBehaviour
 
     private void CountDown()
     {
-        if (timeValue > 0)
-        {
-            timeValue -= Time.deltaTime;
-        }
-        else
-        {
-            timeValue = 0;
-        }
+        //if (timeValue > 0)
+        //{
+        //    timeValue -= Time.deltaTime;
+        //}
+        //else
+        //{
+        //    timeValue = 0;
+        //}
 
         DisplayTime(timeValue);
     }

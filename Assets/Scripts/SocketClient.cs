@@ -16,6 +16,7 @@ using Newtonsoft.Json.Linq;
 using NativeWebSocket;
 using Random = UnityEngine.Random;
 using System.Linq;
+using UnityEngine.SceneManagement;
 //using System.Globalization;
 
 public class SocketClient : MonoBehaviour
@@ -168,7 +169,11 @@ public class SocketClient : MonoBehaviour
             webSocket.OnClose += (WebSocketCloseCode code) =>
             {
                 Debug.Log("WS closed with code: " + code.ToString());
-                
+
+                if(code.ToString() != "Normal")
+                {
+                    OnDisconnect();
+                }
             };
             // Keep sending messages at every 0.3s
             //InvokeRepeating("SendWebSocketMessage", 0.0f, 0.3f);
@@ -438,7 +443,7 @@ public class SocketClient : MonoBehaviour
                 GameManager.instance.timeValue = timer;
                 if(Mathf.FloorToInt(timer) > 0)
                 {
-                    OnCountDown();
+                    StartCoroutine(TimerCountdown());
                 }
                 
                 break;
@@ -562,6 +567,12 @@ public class SocketClient : MonoBehaviour
                 break;
         }
     }
+
+    IEnumerator TimerCountdown()
+    {
+        yield return new WaitForSeconds(1f); 
+        OnCountDown();
+    }
     public void OnRequestRoom()
     {
         Debug.Log("  MainMenu.instance.isSpectator OnRequestRoom =================  " + MainMenu.instance.isSpectator);
@@ -639,6 +650,7 @@ public class SocketClient : MonoBehaviour
         JObject jsData = new JObject();
         jsData.Add("meta", "countDown");
         jsData.Add("room", ROOM);
+        jsData.Add("timer", GameManager.instance.timeValue);
         Send(Newtonsoft.Json.JsonConvert.SerializeObject(jsData).ToString());
     }
     public void OnHeadTurn()
@@ -687,6 +699,7 @@ public class SocketClient : MonoBehaviour
         jsData.Add("meta", "playerWin");
         jsData.Add("clientId", clientId);
         jsData.Add("room", ROOM);
+        jsData.Add("timeWin", GameManager.instance.timeValue);
         Send(Newtonsoft.Json.JsonConvert.SerializeObject(jsData));
     }
 
@@ -715,6 +728,16 @@ public class SocketClient : MonoBehaviour
         ROOM = "";
         MainMenu.instance.ResetAvatarList();
         await webSocket.Close();
+    }
+    public void OnDisconnect()
+    {
+        clientId = "";
+        ROOM = "";
+        MainMenu.instance.ResetAvatarList();
+        if (player)
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
     IEnumerator LoadAvatarImage(string imageUrl, string playerID)
