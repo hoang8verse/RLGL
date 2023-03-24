@@ -1,9 +1,10 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using ZXing;
 using ZXing.QrCode;
+using System.Collections;
 
 namespace UIElements
 {
@@ -13,6 +14,9 @@ namespace UIElements
         [SerializeField] RawImage m_qrImage;
         [SerializeField] Texture2D m_avatarDefault;
         [SerializeField] Dictionary<string, int> m_playerAvatarsList;
+        [SerializeField] TextMeshProUGUI m_TotalPlayer;
+        [SerializeField] TextMeshProUGUI m_playerJoinRoom;
+        float fadeTime = 1f; // Set the time it takes to fade in and out
         public List<PlayerAvatar> avatarsLists;
         int[] listAvatarAvailable;
 
@@ -33,8 +37,53 @@ namespace UIElements
 
             string qrCoreGen = MainMenu.deepLinkZaloApp + "?roomId="+ MainMenu.instance.roomId;
             m_qrImage.texture = GetQRCodeTexture(qrCoreGen, 256, 256);
+            SetTotalPlayer("");
+            SetPlayerJoin("");
         }
-        
+        public void ShowPlayerJoinRoom(string _playerName, int player, int spectator)
+        {
+            
+            SetTotalPlayer(player.ToString());
+            SetPlayerJoin(_playerName);
+            StartCoroutine(FadeIn());
+        }
+        void SetPlayerJoin(string _playerName)
+        {
+            if (_playerName == "") return;
+            string text = _playerName.ToString() + " đã tham gia";
+            m_playerJoinRoom.text = text;
+            //Debug.Log("m_playerJoinRoom.text==============  " + m_playerJoinRoom.text);
+        }
+        void SetTotalPlayer(string _totalPlayer)
+        {
+            if (_totalPlayer == "") return;
+            string text = "Tổng số người đã tham gia: " + _totalPlayer.ToString() + " người";
+            m_TotalPlayer.text = text;
+            //Debug.Log("_totalPlayer==============  " + m_TotalPlayer.text);
+        }
+
+        IEnumerator FadeIn()
+        {
+            m_playerJoinRoom.gameObject.SetActive(true);
+            while (m_playerJoinRoom.alpha < 1)
+            {
+                m_playerJoinRoom.alpha += Time.deltaTime / fadeTime;
+                yield return null;
+            }
+            yield return new WaitForSeconds(3f); // Wait for 2 seconds before fading out
+            StartCoroutine(FadeOut());
+        }
+
+        IEnumerator FadeOut()
+        {
+            while (m_playerJoinRoom.alpha > 0)
+            {
+                m_playerJoinRoom.alpha -= Time.deltaTime / fadeTime;
+                yield return null;
+            }
+            m_playerJoinRoom.alpha = 1f;
+            m_playerJoinRoom.gameObject.SetActive(false);
+        }
         int GetIndexAvatarValid()
         {
             for (int i = 0; i < listAvatarAvailable.Length; i++)
@@ -107,4 +156,6 @@ namespace UIElements
             return texture;
         }
     }
+
+
 }
