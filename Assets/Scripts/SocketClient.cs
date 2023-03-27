@@ -114,7 +114,7 @@ public class SocketClient : MonoBehaviour
         Vector3 center = GameManager.instance.SpawnArea.position;
         Vector3 scale = GameManager.instance.SpawnArea.localScale;
         Vector3 randomPoint = new Vector3(Random.Range(-0.5f, 0.5f),
-                                          2,
+                                          0,
                                           0
                                           );
         randomPoint = Vector3.Scale(randomPoint, scale);
