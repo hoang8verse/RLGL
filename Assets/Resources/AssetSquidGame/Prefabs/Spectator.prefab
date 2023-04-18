@@ -298,7 +298,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camera: {fileID: 3509026616323760169}
+  CountDownTime: 3
   GameTimer: {fileID: 6882900697185571304}
+  ReadyScreen: {fileID: 5220318087331268540}
   EndGameScreen: {fileID: 4310332813425931571}
   clicked: {fileID: 7580605986605439350}
 --- !u!1 &6832811069179193548
@@ -660,6 +662,12 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 248bfbdf52e28dd4f8092b1faee77349, type: 3}
+--- !u!1 &5220318087331268540 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5639075063276298189, guid: 248bfbdf52e28dd4f8092b1faee77349,
+    type: 3}
+  m_PrefabInstance: {fileID: 445943502656084081}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &5220318087331268543 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5639075063276298190, guid: 248bfbdf52e28dd4f8092b1faee77349,

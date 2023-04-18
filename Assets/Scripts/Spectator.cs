@@ -11,7 +11,11 @@ public class Spectator : MonoBehaviour
     private new Camera camera;
 
     [SerializeField]
+    private int CountDownTime = 3;
+    [SerializeField]
     private TextMeshProUGUI GameTimer;
+    [SerializeField]
+    private GameObject ReadyScreen;
     [SerializeField]
     private GameObject EndGameScreen;
     [SerializeField]
@@ -23,6 +27,7 @@ public class Spectator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ReadyScreen.SetActive(true);
         EndGameScreen.SetActive(false);
         GameTimer.text = "";
         CheckDevice();
@@ -167,9 +172,11 @@ public class Spectator : MonoBehaviour
 
     public void StartGame()
     {
-
-        //ReadyScreen.SetActive(false);
-        GameManager.instance.ReadyToPlay();
+        ReadyScreen.GetComponent<UIElements.ReadyScreen>().StartCountDown(CountDownTime, () =>
+        {
+            ReadyScreen.SetActive(false);
+            GameManager.instance.ReadyToPlay();
+        });        
     }
     public void SetTextGameTimer(string timer)
     {
