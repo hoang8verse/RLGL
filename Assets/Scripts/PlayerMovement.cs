@@ -41,6 +41,9 @@ public class PlayerMovement : MonoBehaviour
     private float Speed = 12;
 
     [SerializeField]
+    private int CountDownTime = 3;
+
+    [SerializeField]
     private float Sensitivity;
 
     [SerializeField]
@@ -301,9 +304,12 @@ public class PlayerMovement : MonoBehaviour
     }
     public void StartGame()
     {
-        isReadyStartGame = true;
-        ReadyScreen.SetActive(false);
-        GameManager.instance.ReadyToPlay();
+        ReadyScreen.GetComponent<UIElements.ReadyScreen>().StartCountDown(CountDownTime, () =>
+        {
+            isReadyStartGame = true;
+            ReadyScreen.SetActive(false);
+            GameManager.instance.ReadyToPlay();
+        });        
     }
     public void SetTextGameTimer(string timer)
     {
