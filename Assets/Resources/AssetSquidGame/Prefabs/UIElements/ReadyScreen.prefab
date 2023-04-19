@@ -167,9 +167,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5639075064874264201}
-  - {fileID: 5639075063791553976}
   - {fileID: 2317858555378056664}
+  - {fileID: 5639075063791553976}
+  - {fileID: 5639075064874264201}
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -229,6 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_countDownText: {fileID: 7197275149001468996}
+  m_startGameButton: {fileID: 5639075064874264202}
 --- !u!1 &5639075063791553983
 GameObject:
   m_ObjectHideFlags: 0
@@ -516,7 +517,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2317858555378056664
 RectTransform:
   m_ObjectHideFlags: 0
