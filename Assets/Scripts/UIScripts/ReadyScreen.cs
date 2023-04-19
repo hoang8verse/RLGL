@@ -9,6 +9,7 @@ namespace UIElements
     public class ReadyScreen : Screen
     {        
         [SerializeField] TMPro.TextMeshProUGUI m_countDownText;
+        [SerializeField] Button m_startGameButton;
 
         private int m_time = 0;
         private float m_countDown = 0f;
@@ -28,7 +29,7 @@ namespace UIElements
             {
                 if (m_time >= 0)
                 {
-                    m_countDown += Time.deltaTime;
+                    m_countDown -= Time.deltaTime;
                     if (Mathf.CeilToInt(m_countDown) < m_time)
                     {
                         m_time--;
@@ -53,6 +54,7 @@ namespace UIElements
             m_countDown = m_time;
             m_countDownText.text = m_time.ToString();
             m_countDownText.gameObject.SetActive(true);
+            m_startGameButton.gameObject.SetActive(false);
         }
     }
 }
