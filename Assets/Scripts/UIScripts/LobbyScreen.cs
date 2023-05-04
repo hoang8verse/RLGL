@@ -13,18 +13,23 @@ namespace UIElements
         [SerializeField] TextMeshProUGUI m_roomID;
         [SerializeField] RawImage m_qrImage;
         [SerializeField] Texture2D m_avatarDefault;
-        [SerializeField] Dictionary<string, int> m_playerAvatarsList;
+        
         [SerializeField] TextMeshProUGUI m_TotalPlayer;
         [SerializeField] TextMeshProUGUI m_playerJoinRoom;
         float fadeTime = 1f; // Set the time it takes to fade in and out
         public List<PlayerAvatar> avatarsLists;
-        int[] listAvatarAvailable;
+        private Dictionary<string, int> m_playerAvatarsList = new Dictionary<string, int>();
+        private int[] listAvatarAvailable = new int[] { };
 
         public string RoomID => m_roomID.text;
         public RawImage QRImage => m_qrImage;
         
         // Start is called before the first frame update
         void Start()
+        {            
+            
+        }
+        void OnEnable()
         {
             m_playerAvatarsList = new Dictionary<string, int>();
             listAvatarAvailable = new int[avatarsLists.Count];
