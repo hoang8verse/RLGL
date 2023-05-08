@@ -68,7 +68,7 @@ namespace UIElements
                 if (m_touchScreenKeyboard == null)
                 {
 
-                    m_touchScreenKeyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default);
+                    m_touchScreenKeyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.NumberPad);
                 }
             }
 
