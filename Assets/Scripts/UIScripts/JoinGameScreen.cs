@@ -63,7 +63,7 @@ namespace UIElements
 
         public void OnInputFieldValueChanged(TextMeshProUGUI _currentInput)
         {
-            m_inputField.caretPosition = _currentInput.text.Length;
+            m_inputField.caretPosition = _currentInput.text.Length + 1;
         }
         public void OnInputFieldSelected(TextMeshProUGUI _currentInput)
         {
