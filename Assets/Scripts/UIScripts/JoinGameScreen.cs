@@ -60,6 +60,11 @@ namespace UIElements
         //    if (Application.isMobilePlatform)
         //        m_inputField.text = inputRoomId.text;
         //}
+
+        public void OnInputFieldValueChanged(TextMeshProUGUI _currentInput)
+        {
+            m_inputField.caretPosition = _currentInput.text.Length;
+        }
         public void OnInputFieldSelected(TextMeshProUGUI _currentInput)
         {
 
